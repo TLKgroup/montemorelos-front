@@ -1,0 +1,39 @@
+.btn-primary-outline-add {    
+    color: green;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.btn-primary-outline-edit {    
+    color: #107dac;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.btn-primary-outline-edit:hover {    
+    color: #F9F632;
+}
+
+.btn-primary-outline {    
+    color: #107dac;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.btn-primary-outline:hover {
+    color: red;
+}
+
+.btn-primary-outline-add-m {    
+    color: #107dac;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.btn-primary-outline-add-m:hover {    
+    color: orange;
+}

@@ -1,0 +1,61 @@
+<div class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+
+      <img src="/assets/images/logo.png" height="160px">
+
+    </div>
+
+    <div class="login-box-body">
+
+      <p class="login-box-msg">Inicia sesion para comenzar</p>
+
+      <!--Formulario-->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group has-feedback">
+
+          <input type="text" formControlName="username" class="form-control" placeholder="Usuario"
+            [ngClass]="{ 'is-invalid': submitted && f.username.errors }" required>
+          <div *ngIf="submitted && f.username.errors" class="invalid-feedback d-block">
+            <div *ngIf="f.username.errors.required" class="text-danger">El nombre de ususario es requerido</div>
+          </div>
+
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+        </div>
+
+        <div class="form-group has-feedback">
+
+          <input type="password" formControlName="password" class="form-control" placeholder="Contraseña"
+            [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required>
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required" class="text-danger">La contraseña es requerida</div>
+          </div>
+
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-xs-5 pull-right">
+
+            <button type="submit" class="btn btn-ingresar btn-block btn-flat">Ingresar</button>
+
+          </div>
+
+        </div>        
+
+      </form>      
+    </div>
+
+    <br>
+
+    <mk-alert *ngIf="error"  backgroundColor="danger" isDismisible="false">    
+      Usuario o contraseña incorrecto
+    </mk-alert>
+
+  </div>
+
+</div>
