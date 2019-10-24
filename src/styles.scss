@@ -1,0 +1,121 @@
+@import '~@angular/material/theming';
+@import '~angular-mgl-timeline/theme';
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+ 
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+
+$md-sabinastheme: (
+    50 : #e0e8f0,
+    100 : #b3c6da,
+    200 : #80a0c1,
+    300 : #4d7aa8,
+    400 : #265e96,
+    500 : #004183,
+    600 : #003b7b,
+    700 : #003270,
+    800 : #002a66,
+    900 : #001c53,
+    A100 : #85a2ff,
+    A200 : #527cff,
+    A400 : #1f55ff,
+    A700 : #0641ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$md-sabinasthemeo: (
+    50 : #fff2e8,
+    100 : #fedfc5,
+    200 : #feca9e,
+    300 : #fdb477,
+    400 : #fca45a,
+    500 : #fc943d,
+    600 : #fc8c37,
+    700 : #fb812f,
+    800 : #fb7727,
+    900 : #fa651a,
+    A100 : #ffffff,
+    A200 : #fffbf9,
+    A400 : #ffd7c6,
+    A700 : #ffc5ad,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$candy-app-primary: mat-palette($md-sabinastheme);
+$candy-app-accent:  mat-palette($md-sabinasthemeo, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme);
+@include mgl-timeline-theme($candy-app-theme);
+
+body, html {
+  margin: 0;
+}
+
+md-toolbar {
+  margin-bottom: 10px !important;
+
+  &:not(.mat-primary) {
+    & .mat-toolbar-row {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 5px 0;
+  }
+
+  & button {
+    margin: 5px !important;
+  }
+}
+  
+}
+
+mgl-timeline:not(.mobile) {
+  padding: 50px 20px;
+}
+
+mgl-timeline.mobile {
+  padding-right: 20px;
+}
