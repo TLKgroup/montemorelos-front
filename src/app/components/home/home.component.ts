@@ -9,8 +9,7 @@ import { HomeService } from '../../services/home.service'
 })
 export class HomeComponent implements OnInit {
 
-  totalProducto;
-  totalCliente;
+  totalReporte;
   totalUsuario;
 
   constructor(
@@ -18,9 +17,9 @@ export class HomeComponent implements OnInit {
     private homeService: HomeService
   ) { 
 
-    this.homeService.totalProductos()
+    this.homeService.getReports()
     .subscribe(result => {  
-        this.totalProducto = result.Total;
+        this.totalReporte = result.length;
     }, error => {
         console.log(error);
     });
@@ -28,13 +27,6 @@ export class HomeComponent implements OnInit {
     this.homeService.totalUsuarios()
     .subscribe(result => {
       this.totalUsuario = result.Total;
-    }, error => {
-      console.log(error);
-    });
-
-    this.homeService.totalClientes()
-    .subscribe(result => {
-      this.totalCliente = result.Total;
     }, error => {
       console.log(error);
     });

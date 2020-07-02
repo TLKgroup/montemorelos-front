@@ -35,78 +35,6 @@
         </mk-box>
                                         
 
-                                  <!--      Categorias        -->
-
-        <mk-box [isSolid]="true" boxColor="#fff" headerStyleClass="box-header" [isCollapsable]="true" [isCollapsed]="true" [isRemovable]="false" header="Categorias"> 
-          <ng-container *ngIf="countCategorias > 0; then thencategorias; else elsecategorias;"></ng-container>
-          <ng-template #thencategorias>
-              <ng-container *ngFor="let categoria of categorias; let first = first; let last = last">
-                  <ng-container *ngIf="first; then optionNull;">OptionNull</ng-container>
-                    <ng-template #optionNull>
-                      <label style="color: black" class="control-sidebar-subheading"><a class="btn-primary-outline-add pull-right" (click)="showModalAgregarCategoria()"><i class="fa fa-plus" aria-hidden="true"></i></a>Agregar</label>
-                    </ng-template>
-                    <label style="color: black" class="control-sidebar-subheading">
-                      <a class="btn-primary-outline pull-right" (click)="showDeleteConfirmCategoria(categoria)">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                      </a>
-                      <a style="margin-right: 10px" class="btn-primary-outline-edit pull-right" (click)="showModalEditarCategoria(categoria)">
-                        <i class="fa fa-edit" aria-hidden="true"></i>
-                      </a>{{categoria.nombre_categoria}}
-                    </label>  
-              </ng-container>
-          </ng-template>
-          <ng-template #elsecategorias>
-            <label style="color: black" class="control-sidebar-subheading"><a class="btn-primary-outline-add pull-right" (click)="showModalAgregarCategoria()"><i class="fa fa-plus" aria-hidden="true"></i></a>Agregar</label>
-          </ng-template>
-        </mk-box>
-
-      </div>
-    </mk-tab-content>
-  </mk-tab>     
-  
-  
-  <!--                                           Agregar Categoria                                                  -->
-
-
-  <nz-modal [(nzVisible)]="isVisibleAgregarCategoria" [nzWidth]="300" [nzTitle]="modalTitleAgregarCategoria" [nzContent]="modalContentAgregarCategoria" [nzFooter]="modalFooterAgregarCategoria" (nzOnCancel)="handleCancelAgregarCategoria()">
-      <ng-template #modalTitleAgregarCategoria>Agregar categoria</ng-template>
-      <ng-template #modalContentAgregarCategoria>
-         
-        <form [formGroup]="categoriaAgregarForm">
-          <label for="">Nombre categoria</label>
-          <input type="text" nz-input formControlName="agregarCategoria" />
-            <div *ngIf="submittedAgregarCategoria && acf.agregarCategoria.errors" class="invalid-feedback d-block">
-              <div *ngIf="acf.agregarCategoria.errors.required" class="text-danger">Campo requerido</div>
-            </div> 
-        </form>
-
-      </ng-template>
-      <ng-template #modalFooterAgregarCategoria>
-          <button nz-button nzType="primary" (click)="onSubmitAgregarCategoria()" [nzLoading]="isConfirmLoadingAgregarCategoria">Agregar</button>
-      </ng-template>
-  </nz-modal>
- 
-
-  <!--                                           Editar Categoria                                                  -->
-  
-  <nz-modal [(nzVisible)]="isVisibleEditarCategoria" [nzWidth]="300" [nzTitle]="modalTitleEditarCategoria" [nzContent]="modalContentEditarCategoria" [nzFooter]="modalFooterEditarCategoria" (nzOnCancel)="handleCancelEditarCategoria()">
-      <ng-template #modalTitleEditarCategoria>Editar categoria</ng-template>
-      <ng-template #modalContentEditarCategoria>
-        
-        <form [formGroup]="categoriaEditarForm">
-          <label >Categoria</label>
-          <input type="text" nz-input formControlName="editarCategoria" />
-            <div *ngIf="submittedEditarCategoria && ecf.editarCategoria.errors" class="invalid-feedback d-block">
-              <div *ngIf="ecf.editarCategoria.errors.required" class="text-danger">Campo requerido</div>
-            </div> 
-        </form>
-
-      </ng-template>
-      <ng-template #modalFooterEditarCategoria>
-          <button nz-button nzType="primary" (click)="onSubmitEditarCategoria()" [nzLoading]="isConfirmLoadingEditarCategoria">Guardar cambios</button>
-      </ng-template>
-  </nz-modal>
-
   <!--                                           Agregrar Role                                                 -->
 
   <nz-modal [(nzVisible)]="isVisibleAgregarRole" [nzWidth]="350" [nzTitle]="modalTitleAgregarRole" [nzContent]="modalContentAgregarRole" [nzFooter]="modalFooterAgregarRole" (nzOnCancel)="handleCancelAgregarRole()">
@@ -185,7 +113,7 @@
 
 
 <nz-modal [(nzVisible)]="isVisibleAgregarModulo" [nzWidth]="350" [nzTitle]="modalTitleAgregarModulo" [nzContent]="modalContentAgregarModulo" [nzFooter]="modalFooterAgregarModulo" (nzOnCancel)="handleCancelAgregarModulo()">
-    <ng-template #modalTitleAgregarModulo>Modulos de {{ roleDataSelected.nombre_role }}</ng-template>
+  <ng-template #modalTitleAgregarModulo>Modulos de {{ roleDataSelected.nombre_role }}</ng-template>
     <ng-template #modalContentAgregarModulo>
        
       <h6>Marque o desmarque modulos para {{ roleDataSelected.nombre_role }}</h6>
@@ -196,129 +124,11 @@
         nzContextMenu="nzEvent($event)" 
         [nzCheckedKeys]="defaultCheckedKeys"
         (nzExpandChange)="nzEvent($event)"
-        (nzCheckBoxChange)="nzEvent($event)"
-        >
-        
+        (nzCheckBoxChange)="nzEvent($event)">
       </nz-tree>
   
     </ng-template>
     <ng-template #modalFooterAgregarModulo>
-        <button nz-button nzType="primary" (click)="onSubmitAgregarModulos()">Guardar cambios</button>
+      <button nz-button nzType="primary" (click)="onSubmitAgregarModulos()">Guardar cambios</button>
     </ng-template>
   </nz-modal>
-
-
-
-
-
-
-
-
-<!--
-  <mk-tab>
-    <mk-tab-header><i class="fa fa-home"></i></mk-tab-header>
-    <mk-tab-content>
-      <h3 class="control-sidebar-heading">Recent Activity</h3>
-      <ul class="control-sidebar-menu">
-        <li>
-          <a href="javascript:void(0)">
-            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-            <div class="menu-info">
-              <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-              <p>Will be 23 on April 24th</p>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <i class="menu-icon fa fa-user bg-yellow"></i>
-
-            <div class="menu-info">
-              <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-
-              <p>New phone +1(800)555-1234</p>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-
-            <div class="menu-info">
-              <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-
-              <p>nora@example.com</p>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <i class="menu-icon fa fa-file-code-o bg-green"></i>
-
-            <div class="menu-info">
-              <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-
-              <p>Execution time 5 seconds</p>
-            </div>
-          </a>
-        </li>
-      </ul>
-
-      <h3 class="control-sidebar-heading">Tasks Progress</h3>
-      <ul class="control-sidebar-menu">
-        <li>
-          <a href="javascript:void(0)">
-            <h4 class="control-sidebar-subheading">
-              Custom Template Design
-              <span class="label label-danger pull-right">70%</span>
-            </h4>
-
-            <div class="progress progress-xxs">
-              <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <h4 class="control-sidebar-subheading">
-              Update Resume
-              <span class="label label-success pull-right">95%</span>
-            </h4>
-
-            <div class="progress progress-xxs">
-              <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <h4 class="control-sidebar-subheading">
-              Laravel Integration
-              <span class="label label-warning pull-right">50%</span>
-            </h4>
-
-            <div class="progress progress-xxs">
-              <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="javascript:void(0)">
-            <h4 class="control-sidebar-subheading">
-              Back End Framework
-              <span class="label label-primary pull-right">68%</span>
-            </h4>
-
-            <div class="progress progress-xxs">
-              <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-            </div>
-          </a>
-        </li>
-      </ul>
-
-    </mk-tab-content>
-  </mk-tab>
-
-  -->

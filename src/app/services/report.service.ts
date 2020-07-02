@@ -19,7 +19,6 @@ export class ReportService {
   constructor(private http: HttpClient) {
      
   }
-
   
   getReports(): Observable<Report[]> {
     return this.http.get<any>(`${environment.url_api}reportes`)
@@ -32,13 +31,16 @@ export class ReportService {
                     item.data.type,
                     item.data.description,
                     item.data.colony,
+                    item.data.createAt,
                     item.data.latitude,
                     item.data.longitude,
                     item.data.urlImage1,
                     item.data.urlImage2,
                     item.data.urlImage3,
                     item.data.urlVideo,
-                    item.data.status
+                    item.data.status,
+                    item.data.modificactionAt
+                    
                 );
             });
         })

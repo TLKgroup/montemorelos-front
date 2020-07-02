@@ -43,7 +43,6 @@ export class CoreComponent implements OnInit {
       console.log(this.ngxrolesService.getRoles());
     });    
 
-
     this.rolesServices.setMenuPermissions(Number(this.currentUser.id_role))
     .then(config => {
       this.layoutStore.setSidebarLeftMenu(config);
@@ -52,13 +51,9 @@ export class CoreComponent implements OnInit {
 
   ngOnInit(): void {    
     
-
   }
-
 
   getYear(){
     return (new Date()).getFullYear();
   }
-
-
 }

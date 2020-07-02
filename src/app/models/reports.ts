@@ -5,6 +5,7 @@ export class Report{
         public type: string,
         public description: string,
         public colony: string,
+        public createAt: string,
         public latitude: string,
         public longitude: string,
         public urlImage1?: string,
@@ -12,5 +13,6 @@ export class Report{
         public urlImage3?: string,
         public urlVideo?: string,     
         public status?: string,     
+        public modificationAt?: string,     
     ){}
 }

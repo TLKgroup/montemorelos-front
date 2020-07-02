@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { ReportsRoutingModule } from './reports-routing.module';
@@ -44,6 +44,6 @@ import 'rxjs';
     FormsModule,
     NgxPermissionsModule.forChild()
   ],
-  providers: [{ provide: NZ_ICONS, useValue: icons }]
+  providers: [DatePipe, { provide: NZ_ICONS, useValue: icons }]
 })
 export class ReportsModule { }

@@ -3,6 +3,7 @@ import { ReportService } from '../../services/report.service';
 import { Report } from 'src/app/models/reports';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {} from 'googlemaps';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
@@ -11,15 +12,13 @@ import {} from 'googlemaps';
 })
 export class ReportsComponent implements OnInit {
 
-  
-
   @ViewChild('map', { static: false }) gmapElement: ElementRef;
   map: google.maps.Map;
 
   public reports: Report[] = [];
 
   /* Modal Variables */
-  isVisibleModalView: Boolean = false;
+  isVisibleViewReport: Boolean = false;
 
   /* Forms */
   userViewReport: FormGroup;
@@ -29,6 +28,10 @@ export class ReportsComponent implements OnInit {
   isLoadingConfirmViewReport: Boolean = false;
 
   public reportDataSelected: Report;  
+
+  public status;
+  public date;
+  public fecha;
 
   /* Timeline */
   alternate: boolean = true;
@@ -43,18 +46,30 @@ export class ReportsComponent implements OnInit {
   constructor(
     private reportService : ReportService,
     private formBuilder: FormBuilder,
+    private datePipe: DatePipe,
   ) {
+    
   }
   
   ngOnInit() {
 
     this.userViewReport = this.formBuilder.group({
-
+      statusSelect: [''],
     });
+
+    this.fecha = Date();
+    this.date = { year: 'numeric', month: 'long', day: 'numeric' };
+
 
     this.reportService.getReports()
     .subscribe(request => {
       this.reports = request;
+
+      console.log(request.filter(obj => Number(obj.status) >= 1));
+      console.log(request.filter(obj => Number(obj.status) >= 2));
+      console.log(request.filter(obj => Number(obj.status) >= 3));
+
+      console.log(request.length);
       this.isLoading = false;      
     },
       error => {
@@ -85,56 +100,26 @@ export class ReportsComponent implements OnInit {
 
   showModalVerReporte(data: any) {
     this.reportDataSelected = JSON.parse(JSON.stringify(data));
-    this.isVisibleModalView = true;
+    this.isVisibleViewReport = true;
+    
     setTimeout(() => {      
       this.initializeMap(Number(this.reportDataSelected.latitude), Number(this.reportDataSelected.longitude));
     }, 1000);    
   }
 
+  handleCancelViewReport() {
+    this.isVisibleViewReport = false;
+  }
+
+  onChangeStatus(value) {
+    if(value) {
+      this.status = value;
+      console.log(this.status);
+    }
+  }
+
   onSubmitVerReporte() {
-    this.isVisibleModalView = false;
+    this.isVisibleViewReport = false;
   }
 
-  handleCancelVerReporte() {
-    this.isVisibleModalView = false;
-  }
-
-  entries = [
-    {
-      header: 'Creacion...',
-      content: 'Revisando cada uno de los reportes'
-    },
-    {
-      header: 'En proceso...',
-      content: 'Revisando cada uno de los reportes'
-    },
-    {
-      header: 'Raalizado',
-      content: 'Revisando cada uno de los reportes'
-    }
-  ]
-
-  addEntry() {
-    this.entries.push({
-      header: 'header',
-      content: 'content'
-    })
-  }
-
-  removeEntry() {
-    this.entries.pop();
-  }
-    
-  onHeaderClick(event) {
-    if (!this.expandEnabled) {
-      event.stopPropagation();
-    }
-  }
-
-  onDotClick(event) {
-    if (!this.expandEnabled) {
-      event.stopPropagation();
-    }
-  }
-  
 }
