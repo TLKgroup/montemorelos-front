@@ -42,5 +42,15 @@ export const adminLteConf = {
                 }
             ] 
         },
+        { 
+            label: ' Turismo', 
+            route: '/turismo', 
+            iconClasses: 'fa fa-map', 
+            pullRights: [
+                { 
+                    classes: 'label pull-right bg-red' 
+                }
+            ] 
+        }
     ]
 };

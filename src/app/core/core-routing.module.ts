@@ -36,6 +36,18 @@ const routes: Routes = [
           }
         }
       },
+      {
+        path:'turismo',
+        canActivateChild: [NgxPermissionsGuard],
+        loadChildren: '../components/turismo/turismo.module#TurismoModule',
+        data: {
+          title: 'Turismo',
+          permissions: {
+            only: 'TURISMO',
+            redirectTo: '/'
+          }
+        }
+      },
     ]
   }
 ];

@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'angular-admin-lte';
 import { Router } from '@angular/router';
 
-
 import { AuthentificationService } from './services/authentification.service';
 import { User } from './models/user';
 
 import { setTheme } from 'ngx-bootstrap';
-
 
 
 @Component({

@@ -1,47 +1,67 @@
 <mk-box [isRemovable]="false" [isCollapsed]="false">
 
     <div class="container pull-left">
-        <div class="row">
-            <ng-template [ngxPermissionsOnly]="['canAddProduct']">
-                <div class="col-md-2">
-                    <button nz-button nzType="primary" (click)="showModalAgregarProducto()">Agregar producto</button>
+        <!-- <form [formGroup]="categoriaForm">
+            <div class="row">
+    
+                <div class="col-md-2" style="margin-right: 30px;">
+                    <nz-select  style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Selecionar categoria" [(ngModel)]="selectedCategoria" formControlName="categoriaSelect" (ngModelChange)="onChangeCategoria($event)">
+                        <nz-option nzLabel="SSP" nzValue="1"></nz-option>
+                        <nz-option nzLabel="Transito" nzValue="2"></nz-option>
+                    </nz-select>
                 </div>
-            </ng-template>
-        </div>
+
+                <div class="col-md-2">
+                    <button nz-button nzType="primary" (click)="showModalReportProcess()">Reportes en proceso</button>
+                </div>
+
+                <div class="col-md-2">
+                    <button nz-button nzType="primary" (click)="showModalReportFinish()">Reportes finalizados</button>
+                </div>
+
+            </div>
+        </form> -->
     </div>
 
 </mk-box>
- 
+
 
 <div style="background: white">
-  <nz-table #tableReports [nzData]="reports" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
-      <thead>
+    <nz-table #tableReports [nzData]="reports" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+        <thead>
             <tr>      
                 <th>Folio</th>
+                <th>Dependecia</th>
+                <th>Estado</th>
                 <th>Fecha</th>
                 <th>Tipo de reporte</th>
-                <th>Colonia</th>
                 <th>Acciones</th>         
             </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let data of tableReports.data">
-                <td>{{ data.id_report | uppercase | slice:1:10 }}</td>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableReports.data">
+                <td>{{ data.id_report | uppercase | slice:0:10 }}</td>
+
+                <ng-container *ngIf="data.dependecia == 1">
+                    <td>SSP</td>
+                </ng-container>
+
+                <ng-container *ngIf="data.status == 1">
+                    <td>En revision</td> 
+                </ng-container>
+
                 <td>{{ data.createAt }}</td>
                 <td>{{ data.type }}</td>
-                <td>{{ data.colony }}</td>
                 <td class="text-center">            
                     <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalVerReporte(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
                 </td>          
-          </tr>
-      </tbody>
-  </nz-table>
-</div>
-
-                                              
+            </tr>
+        </tbody>
+    </nz-table>
+</div>                                           
  
 <nz-modal [(nzVisible)]="isVisibleViewReport" [nzWidth]="1000" [nzTitle]="modalTitleViewReport" [nzContent]="modalContentViewReport" [nzFooter]="modalFooterViewReport" (nzOnCancel)="handleCancelViewReport()">
-    <ng-template #modalTitleViewReport>Reporte: {{ this.reportDataSelected.id_report | uppercase | slice:1:10 }}</ng-template>
+    <ng-template #modalTitleViewReport>Reporte: {{ this.reportDataSelected.id_report | uppercase | slice:0:10 }}</ng-template>
 
     <ng-template #modalContentViewReport>
             <div class="row">
@@ -153,6 +173,8 @@
                     </div>
                 </div>
             </div>
+
+            <br>
             
             <div class="row">
                 <div class="form-group">
@@ -168,13 +190,12 @@
                                     <div class="form-group">
                                         <div class="col-md-5">
                                             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selecionar estado" [(ngModel)]="selectedStatus" formControlName="statusSelect" (ngModelChange)="onChangeStatus($event)">
-                                                <nz-option nzLabel="En revision" nzValue="1"></nz-option>
                                                 <nz-option nzLabel="En proceso" nzValue="2"></nz-option>
                                                 <nz-option nzLabel="Terminado" nzValue="3"></nz-option>
                                             </nz-select>
                                         </div>
                                         <div class="col-md-2">
-                                            <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Enviar</button>
+                                            <button nz-button nzType="primary" (click)="onSubmitstatus()">Enviar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -189,5 +210,378 @@
 
     <ng-template #modalFooterViewReport>
         <button nz-button nzType="default" (click)="handleCancelViewReport()">Cerrar</button>
+    </ng-template>
+</nz-modal>
+
+
+
+
+
+
+<nz-modal [(nzVisible)]="isVisibleReportProcess" [nzWidth]="900" [nzTitle]="modalTitleReportProcess" [nzContent]="modalContentReportProcess" [nzFooter]="modalFooterReportProcess" (nzOnCancel)="handleCancelReportProcess()">
+    <ng-template #modalTitleReportProcess>Reportes en proceso</ng-template>
+
+    <ng-template #modalContentReportProcess>
+
+        <div style="background: white">
+            <nz-table #tableReportsProcess [nzData]="reportsProcess" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+                <thead>
+                      <tr>      
+                          <th>Folio</th>
+                          <th>Estado</th>
+                          <th>Fecha</th>
+                          <th>Tipo de reporte</th>
+                          <th>Acciones</th>         
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tableReportsProcess.data">
+                        <td>{{ data.id_report | uppercase | slice:0:10 }}</td>
+                        <ng-container *ngIf="data.status == 2">
+                            <td>En proceso</td> 
+                        </ng-container>
+                        <td>{{ data.createAt }}</td>
+                        <td>{{ data.type }}</td>
+                        <td class="text-center">            
+                            <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalViewReportProcess(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
+                        </td>          
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>        
+
+    </ng-template>
+
+    <ng-template #modalFooterReportProcess>
+        <button nz-button nzType="default" (click)="handleCancelReportProcess()">Cerrar</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisibleViewReportProcess" [nzWidth]="1000" [nzTitle]="modalTitleViewReportProcess" [nzContent]="modalContentViewReportProcess" [nzFooter]="modalFooterViewReportProcess" (nzOnCancel)="handleCancelViewReportProcess()">
+    <ng-template #modalTitleViewReportProcess>Reporte: {{ this.reportDataSelectedProcess.id_report | uppercase | slice:0:10 }}</ng-template>
+
+    <ng-template #modalContentViewReportProcess>
+        <div class="row">
+            <div class="form-group">
+                            
+                <div class="col-md-12">
+                    
+                    <div class="post clearfix">
+                        <div class="user-block">
+                            <img src="../../../assets/img/description.png" alt="User Image">
+                                <span class="username">
+                                <a>Descripcion</a>
+                                </span>
+                        </div>
+                        <p style="margin: 12px;">
+                            {{this.reportDataSelectedProcess.description}}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <ng-container *ngIf="this.reportDataSelectedProcess.urlImage1; then imagenes; else video"></ng-container>
+                <ng-template #imagenes>
+                    <div class="post">
+                        <div class="col-md-6">
+                            <div class="user-block">                                            
+                                <img src="../../../assets/img/gallery.png">
+                                <span class="username">
+                                    <a>Archivos adjuntos</a>
+                                </span>
+                                <span class="description">fotografias</span>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom">
+                            <div class="col-md-12" style="margin: 22px; margin-top: 0px; margin-bottom: 0px;">
+                                <div class="row">
+                                    <div class="form-group">
+
+
+                                        <ng-container *ngIf="this.reportDataSelectedProcess.urlImage1">
+                                            <div class="col-md-4">
+                                                <img class="img-responsive" style="width: 85%; height : 75%;" src="{{this.reportDataSelectedProcess.urlImage1}}" alt="Photo">                                                
+                                            </div>
+                                        </ng-container>
+                                        
+                                        <ng-container *ngIf="this.reportDataSelectedProcess.urlImage2">
+                                            <div class="col-md-4">
+                                                <img class="img-responsive" style="width: 85%; height: 75%;" src="{{this.reportDataSelectedProcess.urlImage2}}" alt="Photo">
+                                            </div>                                                                                        
+                                        </ng-container>
+
+                                        <ng-container *ngIf="this.reportDataSelectedProcess.urlImage3">
+                                            <div class="col-md-4">
+                                                <img class="img-responsive" style="width: 85%; height: 75%;" src="{{this.reportDataSelectedProcess.urlImage1}}" alt="Photo">
+                                            </div>           
+                                        </ng-container>
+                                                                        
+                                    </div>
+                                </div>
+
+
+                            </div>                      
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #video>
+                    <div class="post">
+                        <div class="col-md-6">
+                            <div class="user-block">                                            
+                                <img src="../../../assets/img/gallery.png">
+                                <span class="username">
+                                    <a>Archivos adjuntos</a>
+                                </span>
+                                <span class="description">video</span>
+                            </div>
+                            <div class="row margin-bottom">
+                                <div class="col-sm-12" style="margin: 12px;">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <video style="width: 180%; height : 75%;" controls> 
+                                                <source src="{{this.reportDataSelectedProcess.urlVideo}}" type="video/mp4">
+                                            </video>                                               
+                                        </div>
+                                                    
+                                    </div>
+                                </div>                      
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div  class="user-block">        
+                        <img src="../../../assets/img/maps.png">
+                        <span class="username"><a >Ubicacion</a></span>
+                        <span class="description">Colonia: {{this.reportDataSelectedProcess.colony}}</span>
+                        <br />
+                        <div #map style="width:90%; height:300px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+                    
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                
+                    <div class="user-block">
+                        <img src="../../../assets/img/response.png">
+                        <span class="username"><a >Respuesta</a></span>
+                        <br />
+                        <form [formGroup]="userViewReport">
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-5">
+                                        <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selecionar estado" [(ngModel)]="selectedStatus" formControlName="statusSelect" (ngModelChange)="onChangeStatus($event)">
+                                            <nz-option nzLabel="Terminado" nzValue="3"></nz-option>
+                                        </nz-select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button nz-button nzType="primary" (click)="onSubmitstatus()">Enviar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+ 
+
+    </ng-template>
+
+    <ng-template #modalFooterViewReportProcess>
+        <button nz-button nzType="default" (click)="handleCancelViewReportProcess()">Cerrar</button>
+    </ng-template>
+</nz-modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nz-modal [(nzVisible)]="isVisibleReportFinish" [nzWidth]="900" [nzTitle]="modalTitleReportFinish" [nzContent]="modalContentReportFinish" [nzFooter]="modalFooterReportFinish" (nzOnCancel)="handleCancelReportFinish()">
+    <ng-template #modalTitleReportFinish>Reportes finalizados</ng-template>
+
+    <ng-template #modalContentReportFinish>
+
+        <div style="background: white">
+            <nz-table #tableReportsFinish [nzData]="reportsFinish" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+                <thead>
+                      <tr>      
+                          <th>Folio</th>
+                          <th>Estado</th>
+                          <th>Fecha</th>
+                          <th>Tipo de reporte</th>
+                          <th>Acciones</th>         
+                      </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of tableReportsFinish.data">
+                          <td>{{ data.id_report | uppercase | slice:0:10 }}</td>
+                          <ng-container *ngIf="data.status == 3">
+                            <td>Finalizados</td> 
+                          </ng-container>
+                          <td>{{ data.createAt }}</td>
+                          <td>{{ data.type }}</td>
+                          <td class="text-center">            
+                              <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalViewReportFinish(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
+                          </td>          
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>        
+
+    </ng-template>
+
+    <ng-template #modalFooterReportFinish>
+        <button nz-button nzType="default" (click)="handleCancelReportFinish()">Cerrar</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisibleViewReportFinish" [nzWidth]="1000" [nzTitle]="modalTitleViewReportFinish" [nzContent]="modalContentViewReportFinish" [nzFooter]="modalFooterViewReportFinish" (nzOnCancel)="handleCancelViewReportFinish()">
+    <ng-template #modalTitleViewReportFinish>Reporte: {{ this.reportDataSelectedFinish.id_report | uppercase | slice:0:10 }}</ng-template>
+
+    <ng-template #modalContentViewReportFinish>
+            <div class="row">
+                <div class="form-group">
+                             
+                    <div class="col-md-12">
+                        
+                        <div class="post clearfix">
+                            <div class="user-block">
+                                <img src="../../../assets/img/description.png" alt="User Image">
+                                    <span class="username">
+                                    <a>Descripcion</a>
+                                    </span>
+                            </div>
+                            <p style="margin: 12px;">
+                                {{this.reportDataSelectedFinish.description}}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <ng-container *ngIf="this.reportDataSelectedFinish.urlImage1; then imagenes; else video"></ng-container>
+                    <ng-template #imagenes>
+                        <div class="post">
+                            <div class="col-md-6">
+                                <div class="user-block">                                            
+                                    <img src="../../../assets/img/gallery.png">
+                                    <span class="username">
+                                        <a>Archivos adjuntos</a>
+                                    </span>
+                                    <span class="description">fotografias</span>
+                                </div>
+                            </div>
+                            <div class="row margin-bottom">
+                                <div class="col-md-12" style="margin: 22px; margin-top: 0px; margin-bottom: 0px;">
+                                    <div class="row">
+                                        <div class="form-group">
+
+
+                                            <ng-container *ngIf="this.reportDataSelectedFinish.urlImage1">
+                                                <div class="col-md-4">
+                                                    <img class="img-responsive" style="width: 85%; height : 75%;" src="{{this.reportDataSelectedFinish.urlImage1}}" alt="Photo">                                                
+                                                </div>
+                                            </ng-container>
+                                            
+                                            <ng-container *ngIf="this.reportDataSelectedFinish.urlImage2">
+                                                <div class="col-md-4">
+                                                    <img class="img-responsive" style="width: 85%; height: 75%;" src="{{this.reportDataSelectedFinish.urlImage2}}" alt="Photo">
+                                                </div>                                                                                        
+                                            </ng-container>
+
+                                            <ng-container *ngIf="this.reportDataSelectedFinish.urlImage3">
+                                                <div class="col-md-4">
+                                                    <img class="img-responsive" style="width: 85%; height: 75%;" src="{{this.reportDataSelectedFinish.urlImage1}}" alt="Photo">
+                                                </div>           
+                                            </ng-container>
+                                                                            
+                                        </div>
+                                    </div>
+
+
+                                </div>                      
+                            </div>
+                        </div>
+                    </ng-template>
+
+                    <ng-template #video>
+                        <div class="post">
+                            <div class="col-md-6">
+                                <div class="user-block">                                            
+                                    <img src="../../../assets/img/gallery.png">
+                                    <span class="username">
+                                        <a>Archivos adjuntos</a>
+                                    </span>
+                                    <span class="description">video</span>
+                                </div>
+                                <div class="row margin-bottom">
+                                    <div class="col-sm-12" style="margin: 12px;">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <video style="width: 180%; height : 75%;" controls> 
+                                                    <source src="{{this.reportDataSelectedFinish.urlVideo}}" type="video/mp4">
+                                                </video>                                               
+                                            </div>
+                                                        
+                                        </div>
+                                    </div>                      
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div  class="user-block">        
+                            <img src="../../../assets/img/maps.png">
+                            <span class="username"><a >Ubicacion</a></span>
+                            <span class="description">Colonia: {{this.reportDataSelectedFinish.colony}}</span>
+                            <br />
+                            <div #map style="width:90%; height:300px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+    </ng-template>
+
+    <ng-template #modalFooterViewReportFinish>
+        <button nz-button nzType="default" (click)="handleCancelViewReportFinish()">Cerrar</button>
     </ng-template>
 </nz-modal>
