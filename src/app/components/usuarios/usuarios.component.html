@@ -1,0 +1,81 @@
+<ng-template ngxPermissionsOnly="canAddUsers">
+    <mk-box [isRemovable]="false" [isCollapsed]="false">
+        <div class="container pull-left">
+            <!-- <div class="row">
+            <div class="col-sm-6">    
+                <button nz-button nzType="primary" (click)="showModalAgregarUsuario()">Agregar usuario</button>                         
+            </div>
+        </div> -->
+        </div>
+    </mk-box>
+</ng-template>
+
+
+<div style="background: white">
+    <nz-table #tableUsuarios [nzData]="usuarios" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableUsuarios.data">
+                <td>{{ data.name }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.phone }}</td>
+                <td>
+                    <button style="margin-right: 10px" class="btn btn-primary" nzTitle="Ver " nzPlacement="topCenter" nz-tooltip (click)="showModalDatosUsuario(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                    <button style="margin-right: 10px" class="btn btn-danger" nzTitle="Eliminar" nzPlacement="topCenter" nz-tooltip (click)="showDeleteConfirm(data)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+
+<nz-modal [(nzVisible)]="isVisibleDatosUsuario" [nzWidth]="850" [nzTitle]="modalTitleDatosUsuario" [nzContent]="modalContentDatosUsuario" [nzFooter]="modalFooterDatosUsuario">
+    <ng-template #modalTitleDatosUsuario></ng-template>
+
+    <ng-template #modalContentDatosUsuario>
+        <div class="row">
+            <div class="col-md-6">
+                <ng-container *ngIf="verificadoDataSelected.ine == null; else withImage">
+                    <p>Sin imagen</p>
+                </ng-container>
+                <ng-template #withImage>
+                    <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                </ng-template>
+            </div>
+
+            <div class="col-md-6">
+                <ng-container *ngIf="verificadoDataSelected.ine == null; else withImage">
+                    <br>
+                    <p>Sin imagen</p>
+                </ng-container>
+                <ng-template #withImage>
+                    <br><img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+                </ng-template>
+            </div>
+
+            <div class="col-md-6">
+                <div>
+                    <h5>Nombre</h5>
+                    <label for="">{{ userDataSelected.name }}</label>
+                </div>
+
+                <div>
+                    <br>
+                    <h5>Teléfono</h5>
+                    <label for="">{{ userDataSelected.phone }}</label>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #modalFooterDatosUsuario>
+        <button nz-button nzType="default" (click)="handleCancelDatosUsuario()">Cerrar</button>
+    </ng-template>
+</nz-modal>

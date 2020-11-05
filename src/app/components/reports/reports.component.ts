@@ -35,7 +35,7 @@ export class ReportsComponent implements OnInit {
   
   isLoading: boolean = true;
   
-  searchValueCategoria = '';
+  searchValueDependecia = '';
 
   public reportDataSelected: Report;  
   public reportDataSelectedProcess: Report;  
@@ -70,10 +70,11 @@ export class ReportsComponent implements OnInit {
     });
 
 
-    this.updateSubscription = interval(30000).subscribe(
+    this.updateSubscription = interval(15000).subscribe(
       (val) => { 
-        this.reportService.getReports() .subscribe(request => {
-            this.reports = request.filter(obj => Number(obj.status) == 1) 
+          this.reportService.getReports() .subscribe(request => {
+            var val = request.filter(obj => Number(obj.status) == 1) 
+            this.reports = val.sort((a,b) => 0 - (a > b ? -1 : 1))
           },
           error => {
             console.log(error);
@@ -84,10 +85,17 @@ export class ReportsComponent implements OnInit {
 
     this.reportService.getReports() .subscribe(request => {
 
-      this.reports = request.filter(obj => Number(obj.status) == 1);   
-      this.reportsBackup = request.filter(obj => Number(obj.status) == 1);   
-      this.reportsProcess =  request.filter(obj => Number(obj.status) == 2);
-      this.reportsFinish = request.filter(obj => Number(obj.status) == 3);   
+      var valor1 = request.filter(obj => Number(obj.status) == 1);   
+      var valor2 = request.filter(obj => Number(obj.status) == 1);   
+      var valor3 =  request.filter(obj => Number(obj.status) == 2);
+      var valor4 = request.filter(obj => Number(obj.status) == 3);   
+
+      this.reports = valor1.sort((a,b) => 0 - (a > b ? -1 : 1));
+      this.reportsBackup = valor2.sort((a,b) => 0 - (a > b ? -1 : 1));
+      this.reportsProcess =  valor3.sort((a,b) => 0 - (a > b ? -1 : 1));
+      this.reportsFinish = valor4.sort((a,b) => 0 - (a > b ? -1 : 1));   
+
+      console.log(this.reports);
     
       this.isLoading = false;      
     },
@@ -212,13 +220,13 @@ export class ReportsComponent implements OnInit {
 
 
 
-  searchCategoria(): void {
-    this.reports = this.transform(this.reports, this.searchValueCategoria, 'dependencia');
+  searchDependecia(): void {
+    this.reports = this.transform(this.reports, this.searchValueDependecia, 'dependencia');
   }
 
-  resetCategoria(): void{
+  resetDependecia(): void{
     this.reports = this.reportsBackup;
-    this.searchValueCategoria = '';
+    this.searchValueDependecia = '';
   }
 
   transform(itemList: any[], searchKeyword: string, nombre_columna: string)  {

@@ -1,26 +1,18 @@
 <mk-box [isRemovable]="false" [isCollapsed]="false">
 
     <div class="container pull-left">
-        <!-- <form [formGroup]="categoriaForm">
-            <div class="row">
-    
-                <div class="col-md-2" style="margin-right: 30px;">
-                    <nz-select  style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="Selecionar categoria" [(ngModel)]="selectedCategoria" formControlName="categoriaSelect" (ngModelChange)="onChangeCategoria($event)">
-                        <nz-option nzLabel="SSP" nzValue="1"></nz-option>
-                        <nz-option nzLabel="Transito" nzValue="2"></nz-option>
-                    </nz-select>
-                </div>
 
-                <div class="col-md-2">
-                    <button nz-button nzType="primary" (click)="showModalReportProcess()">Reportes en proceso</button>
-                </div>
+        <!-- <div class="col-md-2" style="width: 200px;">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Selecione dependencia" [(ngModel)]="selectedDependecia" formControlName="dependeciaSelect" (ngModelChange)="onChangeDependedcia($event)">
+                <nz-option nzLabel="En proceso" nzValue="2"></nz-option>
+                <nz-option nzLabel="Terminado" nzValue="3"></nz-option>
+            </nz-select>
+        </div>
 
-                <div class="col-md-2">
-                    <button nz-button nzType="primary" (click)="showModalReportFinish()">Reportes finalizados</button>
-                </div>
+        <div class="col-md-2">
+            <button nz-button nzType="primary" (click)="buscarDepencia()">Buscar</button>
+        </div>  -->
 
-            </div>
-        </form> -->
     </div>
 
 </mk-box>
@@ -42,8 +34,23 @@
             <tr *ngFor="let data of tableReports.data">
                 <td>{{ data.id_report | uppercase | slice:0:10 }}</td>
 
-                <ng-container *ngIf="data.dependecia == 1">
+                <ng-container *ngIf="data.dependencia == 1">
                     <td>SSP</td>
+                </ng-container>
+                <ng-container *ngIf="data.dependencia == 2">
+                    <td>Atencion cuidadana</td>
+                </ng-container>
+                <ng-container *ngIf="data.dependencia == 3">
+                    <td>Obras publicas</td>
+                </ng-container>
+                <ng-container *ngIf="data.dependencia == 4">
+                    <td>Alumbrado publico</td>
+                </ng-container>
+                <ng-container *ngIf="data.dependencia == 5">
+                    <td>DIF</td>
+                </ng-container>
+                <ng-container *ngIf="data.dependencia == 6">
+                    <td>Transito</td>
                 </ng-container>
 
                 <ng-container *ngIf="data.status == 1">
@@ -52,7 +59,7 @@
 
                 <td>{{ data.createAt }}</td>
                 <td>{{ data.type }}</td>
-                <td class="text-center">            
+                <td>            
                     <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalVerReporte(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
                 </td>          
             </tr>

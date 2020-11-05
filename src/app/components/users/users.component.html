@@ -13,17 +13,17 @@
 <div style="background: white">
   <nz-table #tableUsers [nzData]="users" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
       <thead>
-          <tr>      
+            <tr>      
                 <th>Nombre</th>
                 <th>Usuario</th>
                 <th>Rol</th>
                 <ng-template [ngxPermissionsOnly]="['canEditUsers', 'canDeleteUsers']">
                     <th>Acciones</th>
                 </ng-template>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let data of tableUsers.data">
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableUsers.data">
                 <td>{{ data.nombre_empleado }}</td>
                 <td>{{ data.nombre_usuario }}</td>
                 <td>{{ data.nombre_role }}</td>
@@ -37,20 +37,20 @@
                         </ng-template>  
                     </td>
                 </ng-template>
-          </tr>
-      </tbody>
-  </nz-table>
+            </tr>
+        </tbody>
+    </nz-table>
 </div>
 
 <!--                                             Agregar Usuario                                                                   -->
  
 <nz-modal [(nzVisible)]="isVisibleAgregarUsuario" [nzWidth]="800" [nzTitle]="modalTitleAgregarUsuario" [nzContent]="modalContentAgregarUsuario" [nzFooter]="modalFooterAgregarUsuario" (nzOnCancel)="handleCancelAgregarUsuario()">
-  <ng-template #modalTitleAgregarUsuario>Nuevo usuario</ng-template>
+    <ng-template #modalTitleAgregarUsuario>Nuevo usuario</ng-template>
 
-  <ng-template #modalContentAgregarUsuario>
-      <form [formGroup]="userAgregarForm">
-          <div class="row">
-              <div class="form-group">
+    <ng-template #modalContentAgregarUsuario>
+        <form [formGroup]="userAgregarForm">
+            <div class="row">
+                <div class="form-group">
                     <div class="col-md-3">
                         <label for="">Nombre</label>
                             <input type="text" class="form-control" formControlName="nombre_empleado">  
@@ -58,7 +58,7 @@
                                     <div *ngIf="fau.nombre_empleado.errors.required" class="text-danger">Campo requerido</div>
                                 </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3">  
                         <label for="">Usuario</label>
                             <input type="text" class="form-control" formControlName="nombre_usuario">  
                                 <div *ngIf="submittedAgregarUsuario && fau.nombre_usuario.errors" class="invalid-feedback d-block">
@@ -90,19 +90,19 @@
                                 <nz-option *ngFor="let role of roles;" nzLabel="{{ role.nombre_role }}" nzValue="{{ role.id_role }}"></nz-option>
                             </nz-select>
                         </div>
-                            <div *ngIf="submittedAgregarUsuario && fau.rol.errors" class="invalid-feedback d-block">
-                                <div *ngIf="fau.rol.errors.required" class="text-danger">Campo requerido</div>
-                            </div>
+                        <div *ngIf="submittedAgregarUsuario && fau.rol.errors" class="invalid-feedback d-block">
+                            <div *ngIf="fau.rol.errors.required" class="text-danger">Campo requerido</div>
+                        </div>
                     </div> 
-              </div>
-          </div>
-      </form>
-  </ng-template>
+                </div>
+            </div>
+        </form>
+    </ng-template>
 
-  <ng-template #modalFooterAgregarUsuario>
-      <button nz-button nzType="default" (click)="handleCancelAgregarUsuario()">Cerrar</button>
-      <button nz-button nzType="primary" (click)="onSubmitAgregarUsuario()" [nzLoading]="isConfirmLoadingAgregarUsuario">Guardar cambios</button>
-  </ng-template>
+    <ng-template #modalFooterAgregarUsuario>
+        <button nz-button nzType="default" (click)="handleCancelAgregarUsuario()">Cerrar</button>
+        <button nz-button nzType="primary" (click)="onSubmitAgregarUsuario()" [nzLoading]="isConfirmLoadingAgregarUsuario">Guardar cambios</button>
+    </ng-template>
 </nz-modal>
 
 

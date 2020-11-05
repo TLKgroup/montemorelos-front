@@ -37,6 +37,18 @@ const routes: Routes = [
         }
       },
       {
+        path:'verificacion',
+        canActivateChild: [NgxPermissionsGuard],
+        loadChildren: '../components/verificacion/verificacion.module#VerificacionModule',
+        data: {
+          title: 'Verificacion',
+          permissions: {
+            only: 'VERIFICACION',
+            redirectTo: '/'
+          }
+        }
+      },
+      {
         path:'turismo',
         canActivateChild: [NgxPermissionsGuard],
         loadChildren: '../components/turismo/turismo.module#TurismoModule',
@@ -44,6 +56,30 @@ const routes: Routes = [
           title: 'Turismo',
           permissions: {
             only: 'TURISMO',
+            redirectTo: '/'
+          }
+        }
+      },
+      {
+        path:'panico',
+        canActivateChild: [NgxPermissionsGuard],
+        loadChildren: '../components/panic/panic.module#PanicModule',
+        data: {
+          title: 'Panico',
+          permissions: {
+            only: 'PANICO',
+            redirectTo: '/'
+          }
+        }
+      },
+      {
+        path:'usuariosA',
+        canActivateChild: [NgxPermissionsGuard],
+        loadChildren: '../components/usuarios/usuarios.module#UsuariosModule',
+        data: {
+          title: 'Usuarios App',
+          permissions: {
+            only: 'USUARIOSA',
             redirectTo: '/'
           }
         }

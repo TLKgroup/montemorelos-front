@@ -5,6 +5,7 @@ export class Report{
         public type: string,
         public description: string,
         public colony: string,
+        public dependencia: string,
         public createAt: string,
         public latitude: string,
         public longitude: string,

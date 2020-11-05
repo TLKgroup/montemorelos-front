@@ -27,6 +27,7 @@ export class HomeService {
                     item.data.type,
                     item.data.description,
                     item.data.colony,
+                    item.data.dependencia,
                     item.data.latitude,
                     item.data.longitude,
                     item.data.urlImage1,

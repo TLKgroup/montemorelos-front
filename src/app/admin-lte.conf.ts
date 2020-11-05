@@ -51,6 +51,36 @@ export const adminLteConf = {
                     classes: 'label pull-right bg-red' 
                 }
             ] 
+        },
+        { 
+            label: ' Verificacion', 
+            route: '/verificacion', 
+            iconClasses: 'fa fa-check-square-o ', 
+            pullRights: [
+                { 
+                    classes: 'label pull-right bg-red' 
+                }
+            ] 
+        },
+        { 
+            label: ' Alerta de panico', 
+            route: '/panico', 
+            iconClasses: 'fa fa-map', 
+            pullRights: [
+                { 
+                    classes: 'label pull-right bg-red' 
+                }
+            ] 
+        },
+        { 
+            label: ' Usuarios app', 
+            route: '/usuariosA', 
+            iconClasses: 'fa fa-users', 
+            pullRights: [
+                { 
+                    classes: 'label pull-right bg-red' 
+                }
+            ] 
         }
     ]
 };

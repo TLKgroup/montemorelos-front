@@ -1,0 +1,69 @@
+<mk-box [isRemovable]="false" [isCollapsed]="false">
+
+    <div class="container pull-left">
+
+    </div>
+
+</mk-box>
+
+
+
+
+<div style="background: white">
+    <nz-table #tableReports [nzData]="panic" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+        <thead>
+            <tr>      
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Acciones</th>         
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableReports.data">
+                <td>{{ data.createAt | date  }}</td>
+                <td>{{ data.nombre }}</td>
+                <td>{{ data.telefono }}</td>
+                <td>            
+                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalPanic(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
+                </td>          
+            </tr>
+        </tbody>
+    </nz-table>
+</div>    
+
+
+<nz-modal [(nzVisible)]="isVisiblePanic" [nzWidth]="800" [nzTitle]="modalTitlePanic" [nzContent]="modalContentPanic" [nzFooter]="modalFooterPanic">
+    <ng-template #modalTitlePanic></ng-template>
+
+    <ng-template #modalContentPanic>
+        <!-- <div class="row">
+            <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+            
+            <img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+        </div>
+        <br > 
+        <div class="row">
+            <label for="">{{ userDataSelected.name }}</label>
+            
+            <label for="">{{ userDataSelected.phone }}</label>
+        </div> -->
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div  class="user-block">        
+                        <img src="../../../assets/img/maps.png">
+                        <span class="username"><a >Ubicacion</a></span>
+                        <br />
+                        <div #map style="width:90%; height:300px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #modalFooterPanic>
+        <button nz-button nzType="default" (click)="handleCancelPanic()">Cerrar</button>
+    </ng-template>
+</nz-modal>

@@ -9,14 +9,6 @@
             </mk-box-small-footer>
           </mk-box-small>
         </div>
-        <!-- <div class="col-md-4 col-xs-12">
-          <mk-box-small header="{{ totalCliente }}" backgroundColor="green" headerColor="#FFFFFF" iconStyleClass="fa fa-address-card">
-            <mk-box-small-content>Clientes activos</mk-box-small-content>
-            <mk-box-small-footer>
-              <a routerLink="/clientes">Mas informacion <i class="fa fa-arrow-circle-right"></i></a>
-            </mk-box-small-footer>
-          </mk-box-small>
-        </div> -->
         <div class="col-md-4 col-xs-12">
           <mk-box-small header="{{ totalUsuario }}" backgroundColor="yellow" headerColor="#FFFFFF" iconStyleClass="fa fa-user-o">
             <mk-box-small-content>Usuarios registrados</mk-box-small-content>
@@ -25,19 +17,44 @@
             </mk-box-small-footer>
           </mk-box-small>
         </div>
-      </div>
-    
-    <!--
-      <div class="row">
-        <div class="col-md-4 col-xs-12">
-          <mk-box-small header="150" backgroundColor="aqua" headerColor="#FFFFFF" iconStyleClass="fa fa-users">
-            <mk-box-small-content>Proveedores activos</mk-box-small-content>
+        <!-- <div class="col-md-4 col-xs-12">
+          <mk-box-small header="{{ totalReporte2 }}" backgroundColor="green" headerColor="#FFFFFF" iconStyleClass="fa fa-address-card">
+            <mk-box-small-content>Reportes en proceso</mk-box-small-content>
             <mk-box-small-footer>
-              <a routerLink="/proveedores">Mas informacion <i class="fa fa-arrow-circle-right"></i></a>
+              <a routerLink="/reportes">Mas informacion <i class="fa fa-arrow-circle-right"></i></a>
             </mk-box-small-footer>
           </mk-box-small>
         </div>
+        <div class="col-md-4 col-xs-12">
+          <mk-box-small header="{{ totalReporte3 }}" backgroundColor="blue" headerColor="#FFFFFF" iconStyleClass="fa fa-address-card">
+            <mk-box-small-content>Reportes en proceso</mk-box-small-content>
+            <mk-box-small-footer>
+              <a routerLink="/reportes">Mas informacion <i class="fa fa-arrow-circle-right"></i></a>
+            </mk-box-small-footer>
+          </mk-box-small>
+        </div> -->
       </div>
-    -->
+    
+    
+      <div class="row">
+
+      </div>
+
+
+
+   
 
 </section>
+
+<nz-modal [(nzVisible)]="isVisibleViewPanicAlert" [nzWidth]="800" [nzTitle]="modalTitleViewPanicAlert" [nzContent]="modalContentViewPanicAlert" [nzFooter]="modalFooterViewPanicAlert" (nzOnCancel)="handleCancelViewPanicAlert()">
+  <ng-template #modalTitleViewPanicAlert>Nuevo usuario</ng-template>
+
+  <ng-template #modalContentViewPanicAlert>
+
+  </ng-template>
+
+  <ng-template #modalFooterViewPanicAlert>
+      <button nz-button nzType="default" (click)="handleCancelViewPanicAlert()">Cerrar</button>
+      <button nz-button nzType="primary" (click)="onSubmitViewPanicAlert()" [nzLoading]="isConfirmLoadingViewPanicAlert">Guardar cambios</button>
+  </ng-template>
+</nz-modal>

@@ -1,0 +1,52 @@
+<mk-box [isRemovable]="false" [isCollapsed]="false">
+
+    <div class="container pull-left">
+
+    </div>
+
+</mk-box>
+
+
+<div style="background: white">
+    <nz-table #tableVerificado [nzData]="verificado" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+        <thead>
+            <tr>      
+                <th>INE</th>
+                <th>Dependecia</th>
+                <th>Acciones</th>         
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableVerificado.data">
+                <td></td>
+                <td>{{ data.createAt }}</td>
+                <td>            
+                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalDatosVerificado(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
+                </td>          
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+
+<nz-modal [(nzVisible)]="isVisibleDatosVerificado" [nzWidth]="850" [nzTitle]="modalTitleDatosVerificado" [nzContent]="modalContentDatosVerificado" [nzFooter]="modalFooterDatosVerificado">
+    <ng-template #modalTitleDatosVerificado></ng-template>
+
+    <ng-template #modalContentDatosVerificado>
+        <!-- <div class="row">
+            <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+            
+            <img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+        </div>
+        <br > 
+        <div class="row">
+            <label for="">{{ userDataSelected.name }}</label>
+            
+            <label for="">{{ userDataSelected.phone }}</label>
+        </div> -->
+    </ng-template>
+
+    <ng-template #modalFooterDatosVerificado>
+        <button nz-button nzType="default" (click)="handleCancelDatosVerificado()">Cerrar</button>
+    </ng-template>
+</nz-modal>
