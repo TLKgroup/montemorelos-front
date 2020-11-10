@@ -2,7 +2,7 @@
     <mk-box [isRemovable]="false" [isCollapsed]="false">
         <div class="container pull-left">
             <!-- <div class="row">
-            <div class="col-sm-6">    
+            <div class="col-sm-4">    
                 <button nz-button nzType="primary" (click)="showModalAgregarUsuario()">Agregar usuario</button>                         
             </div>
         </div> -->
@@ -36,42 +36,117 @@
 </div>
 
 
-<nz-modal [(nzVisible)]="isVisibleDatosUsuario" [nzWidth]="850" [nzTitle]="modalTitleDatosUsuario" [nzContent]="modalContentDatosUsuario" [nzFooter]="modalFooterDatosUsuario">
+<nz-modal [(nzVisible)]="isVisibleDatosUsuario" [nzWidth]="750" [nzTitle]="modalTitleDatosUsuario" [nzContent]="modalContentDatosUsuario" [nzFooter]="modalFooterDatosUsuario">
     <ng-template #modalTitleDatosUsuario></ng-template>
 
     <ng-template #modalContentDatosUsuario>
         <div class="row">
-            <div class="col-md-6">
-                <ng-container *ngIf="verificadoDataSelected.ine == null; else withImage">
+            <div class="col-md-12">
+                <h4>DATOS DEL USUARIO</h4>
+            </div>
+
+            <div class="col-md-4">
+                <label>Nombre</label>
+                <p for="">{{ userDataSelected.name }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <label>Teléfono</label>
+                <p for="">{{ userDataSelected.phone }}</p>
+            </div>
+
+            <div class="col-md-4">
+
+                <label>Edad</label>
+                <p for="">{{ userDataSelected.age }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <br>
+                <label>Email</label>
+                <p for="">{{ userDataSelected.email }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <br>
+                <label>Sexo</label>
+                <p for="">{{ userDataSelected.sex }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <br>
+                <label>Colonia</label>
+                <p for="">{{ userDataSelected.colony }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <br>
+                <br>
+                <h4>DATOS DE VERIFICACIÓN</h4>
+            </div>
+
+            <div class="col-md-4">
+                <label>INE (parte frontal)</label>
+                <ng-container *ngIf="this.verificadoDataSelected.ine==''; else withImage">
                     <p>Sin imagen</p>
                 </ng-container>
                 <ng-template #withImage>
-                    <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                    <div>
+                        <img src="{{ this.verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                    </div>
                 </ng-template>
             </div>
 
-            <div class="col-md-6">
-                <ng-container *ngIf="verificadoDataSelected.ine == null; else withImage">
-                    <br>
+            <div class="col-md-4">
+                <label>INE (parte trasera)</label>
+                <ng-container *ngIf="!this.verificadoDataSelected.ine2; else withImage1">
                     <p>Sin imagen</p>
                 </ng-container>
-                <ng-template #withImage>
-                    <br><img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+                <ng-template #withImage1>
+                    <div>
+                        <img src="{{ this.verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+                    </div>
                 </ng-template>
             </div>
 
-            <div class="col-md-6">
-                <div>
-                    <h5>Nombre</h5>
-                    <label for="">{{ userDataSelected.name }}</label>
-                </div>
-
-                <div>
-                    <br>
-                    <h5>Teléfono</h5>
-                    <label for="">{{ userDataSelected.phone }}</label>
-                </div>
+            <div class="col-md-4">
+                <label>Domicilio</label>
+                <ng-container *ngIf="!this.verificadoDataSelected.domicilio; else withImage2">
+                    <p>Sin imagen</p>
+                </ng-container>
+                <ng-template #withImage2>
+                    <div>
+                        <img src="{{ this.verificadoDataSelected.domicilio }}" style="width: 50px; height: 90px;" alt="">
+                    </div>
+                </ng-template>
             </div>
+
+            <div class="col-md-4">
+                <label>Fachada</label>
+                <ng-container *ngIf="!this.verificadoDataSelected.fachada; else withImage3">
+                    <p>Sin imagen</p>
+                </ng-container>
+                <ng-template #withImage3>
+                    <div>
+                        <img src="{{ this.verificadoDataSelected.fachada }}" style="width: 50px; height: 90px;" alt="">
+                    </div>
+                </ng-template>
+            </div>
+
+            <div class="col-md-4">
+                <label>Selfie</label>
+                <ng-container *ngIf="!this.verificadoDataSelected.selfie; else withImage4">
+                    <p>Sin imagen</p>
+                </ng-container>
+                <ng-template #withImage4>
+                    <div>
+                        <img src="{{ this.verificadoDataSelected.selfie }}" style="width: 50px; height: 90px;" alt="">
+                    </div>
+                </ng-template>
+            </div>
+
+             
         </div>
     </ng-template>
 

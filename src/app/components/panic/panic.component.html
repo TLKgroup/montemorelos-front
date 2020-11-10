@@ -12,51 +12,110 @@
 <div style="background: white">
     <nz-table #tableReports [nzData]="panic" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
         <thead>
-            <tr>      
+            <tr>
                 <th>Fecha</th>
                 <th>Nombre</th>
                 <th>Telefono</th>
-                <th>Acciones</th>         
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of tableReports.data">
-                <td>{{ data.createAt | date  }}</td>
+                <td>{{ data.createAt | date }}</td>
                 <td>{{ data.nombre }}</td>
                 <td>{{ data.telefono }}</td>
-                <td>            
-                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalPanic(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
-                </td>          
+                <td>
+                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalPanic(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                </td>
             </tr>
         </tbody>
     </nz-table>
-</div>    
+</div>
 
 
 <nz-modal [(nzVisible)]="isVisiblePanic" [nzWidth]="800" [nzTitle]="modalTitlePanic" [nzContent]="modalContentPanic" [nzFooter]="modalFooterPanic">
     <ng-template #modalTitlePanic></ng-template>
 
     <ng-template #modalContentPanic>
-        <!-- <div class="row">
-            <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
-            
-            <img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+        <div class="col-md-4">
+            <label>Nombre</label>
+            <p for="">{{ panicDataSelected.nombre }}</p>
         </div>
-        <br > 
-        <div class="row">
-            <label for="">{{ userDataSelected.name }}</label>
-            
-            <label for="">{{ userDataSelected.phone }}</label>
-        </div> -->
 
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <div  class="user-block">        
+        <div class="col-md-4">
+            <label>Teléfono</label>
+            <p for="">{{ panicDataSelected.telefono }}</p>
+        </div>
+
+        <div class="col-md-4">
+            <label>INE (parte frontal)</label>
+            <ng-container *ngIf='this.verificadoDataSelected.ine == ""; else withImage1'>
+                <p>Sin imagen</p>
+            </ng-container>
+            <ng-template #withImage1>
+                <div>
+                    <img src="{{ this.verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="col-md-4">
+            <label>INE (parte trasera)</label>
+            <ng-container *ngIf='this.verificadoDataSelected.ine2 == ""; else withImage2'>
+                <p>Sin imagen</p>
+            </ng-container>
+            <ng-template #withImage2>
+                <div>
+                    <img src="{{ this.verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="col-md-4">
+            <label>Domicilio</label>
+            <ng-container *ngIf='this.verificadoDataSelected.domicilio == ""; else withImage3'>
+                <p>Sin imagen</p>
+            </ng-container>
+            <ng-template #withImage3>
+                <div>
+                    <img src="{{ this.verificadoDataSelected.domicilio }}" style="width: 50px; height: 90px;" alt="">
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="col-md-4">
+            <label>Fachada</label>
+            <ng-container *ngIf='this.verificadoDataSelected.fachada == ""; else withImage4'>
+                <p>Sin imagen</p>
+            </ng-container>
+            <ng-template #withImage4>
+                <img src="{{ this.verificadoDataSelected.fachada }}" style="width: 50px; height: 90px;" alt="">
+            </ng-template>
+        </div>
+
+        <div class="col-md-4 ">
+            <label>Selfie</label>
+            <ng-container *ngIf='this.verificadoDataSelected.selfie ==  ""; else withImage5'>
+                <p>Sin imagen</p>
+            </ng-container>
+            <ng-template #withImage5>
+                <div>
+                    <img src="{{ this.verificadoDataSelected.selfie }}" style="width: 50px; height: 90px;" alt="s">
+                </div>
+            </ng-template>
+        </div>
+
+        <!--[disabled]="#map.disabled "-->
+        <div class="row ">
+            <div class="form-group ">
+                <div class="col-md-12 ">
+                    <div class="user-block ">
                         <img src="../../../assets/img/maps.png">
-                        <span class="username"><a >Ubicacion</a></span>
+                        <span class="username "><a>Ubicacion</a></span>
                         <br />
-                        <div #map style="width:90%; height:300px"></div>
+                        <div (click)="mapaurl() " style="width:100%; height:300px">
+                            <div #map style="pointer-events:none; width:90%; height:250px"></div>
+                        </div>
                     </div>
                 </div>
             </div>

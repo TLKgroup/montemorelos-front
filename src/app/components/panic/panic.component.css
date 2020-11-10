@@ -1,0 +1,6 @@
+#mapa .capa-anti-eventos {
+    width: 600px;
+    height: 450px;
+    position: absolute;
+    cursor: pointer;
+}

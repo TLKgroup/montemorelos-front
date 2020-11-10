@@ -9,4 +9,4 @@ export class Users{
         public sex: string,
         public verificado: string,
     ){}
-}
+} 

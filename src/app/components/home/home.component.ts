@@ -3,23 +3,29 @@ import { ReportService } from 'src/app/services/report.service';
 import { HomeService } from 'src/app/services/home.service';
 import { Subscription, interval } from 'rxjs';
 import { PanicService } from 'src/app/services/panic.service';
-import { UsersService } from 'src/app/services/users.service';
-import { VerificadoService } from 'src/app/services/verificado.service';
-
+import Swal from 'sweetalert2';
+import { Panic } from 'src/app/models/panic';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
 
+  title = 'Alerta';
   totalReporte;
-  totalReporte2;
-  totalReporte3;
   totalUsuario;
+  
+  public panic: Panic[] = [];
+  public panics: Panic[] = [];
 
-  panic;
+  public panicDataSelected: Panic;
+
+  public cantidadpanic;
+  public cantidadpanics;
+
+  public visto : Boolean = false;
 
   isVisibleViewPanicAlert : Boolean = false;
 
@@ -28,22 +34,13 @@ export class HomeComponent implements OnInit {
   constructor(
     private reportService : ReportService, 
     private homeService : HomeService, 
-    private panicService : PanicService, 
-    private usersService: UsersService,
-    private verificadoService: VerificadoService,
+    private panicService : PanicService
   ) { 
 
     this.reportService.getReports().subscribe(result => {  
-      var total = result.filter(obj => Number(obj.status) == 1);
-      var total2 = result.filter(obj => Number(obj.status) == 2).length;
-      var total3 = result.filter(obj => Number(obj.status) == 3).length;
-
-      this.totalReporte = total.length;
-      this.totalReporte2 = total2;
-      this.totalReporte3 = total3;
-
+      this.totalReporte = result.length;
     }, error => {
-        console.log(error);
+      console.log(error);
     });
     
     this.homeService.totalUsuarios().subscribe(result => {
@@ -52,29 +49,9 @@ export class HomeComponent implements OnInit {
       console.log(error);
     });
 
-    this.panicService.getPanic() .subscribe(request => {
-      this.panic =  request.length;
-    },
-    error => {
-      console.log(error);
-    })
-
-
-
-
-
-
-
-
-    this.usersService.getUsers() .subscribe(request => {
-      console.log(request);
-    },
-    error => {
-      console.log(error);
-    })
-
-    this.verificadoService.getVerificado() .subscribe(request => {
-      console.log(request);
+    this.panicService.getPanic().subscribe(request => {
+      this.panic = request.filter(obj => obj.status == "0");
+      console.log(this.panic.length);
     },
     error => {
       console.log(error);
@@ -82,24 +59,51 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.updateSubscription = interval(300).subscribe(
-    //   (val) => { 
+    this.updateSubscription = interval(7500).subscribe((val) => { 
 
-    //       this.panicService.getPanic() .subscribe(request => {
-           
+      this.panicService.getPanic().subscribe(request => {
+        
+        this.panics = request.filter(obj => obj.status == "0");
+        console.log(this.panic.length);
+        console.log(this.panics.length);
 
-    //         if(request.length > this.panic) {
-    //           this.showModalAlert();
-    //         }
+        if(this.panics.length > this.panic.length){
+          this.reproducir();
+          this.showModalAlert() 
+        }
 
-    //       },
-    //       error => {
-    //         console.log(error);
-    //       }
+        this.panic = request;
+      },
+      error => {
+        console.log(error);
+      });  
+      
+    });
+  }
 
-    //     );  
-    //   }
-    // );
+  showModal(): void {
+    
+    // this.panicDataSelected = JSON.parse(JSON.stringify(data));
+    // console.log(this.panicDataSelected);
+
+    Swal.fire({
+      title: 'Alerta',
+      text: 'Hola ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Enviar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.showModalAlert();
+      }
+    });
+  }
+
+  reproducir() {
+    const audio = new Audio('../../../assets/songs/alerta.wav');
+    audio.play();
   }
 
   showModalAlert() {
@@ -108,7 +112,6 @@ export class HomeComponent implements OnInit {
 
   handleCancelViewPanicAlert() {
     this.isVisibleViewPanicAlert = false;
-    this.panic = [];
   }
 
 }

@@ -8,21 +8,23 @@
 
 
 <div style="background: white">
-    <nz-table #tableVerificado [nzData]="verificado" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
+    <nz-table #tableUsuarios [nzData]="usuarios" nzBordered="true" [nzLoading]="isLoading" nzSize="small" nzShowPagination="true">
         <thead>
-            <tr>      
-                <th>INE</th>
-                <th>Dependecia</th>
-                <th>Acciones</th>         
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of tableVerificado.data">
-                <td></td>
-                <td>{{ data.createAt }}</td>
-                <td>            
-                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalDatosVerificado(data)"><i class="fa fa-eye" aria-hidden="true"></i></button>                                            
-                </td>          
+            <tr *ngFor="let data of tableUsuarios.data">
+                <td>{{ data.name }}</td>
+                <td>{{ data.email }}</td>
+                <td>{{ data.phone }}</td>
+                <td>
+                    <button style="margin-right: 10px" nzTitle="Ver" nzPlacement="topCenter" nz-tooltip class="btn btn-success-sabinas" (click)="showModalDatosVerificado(data)"><i nz-icon nzType="search" nzTheme="outline"></i></button>
+                </td>
             </tr>
         </tbody>
     </nz-table>
@@ -30,23 +32,138 @@
 
 
 <nz-modal [(nzVisible)]="isVisibleDatosVerificado" [nzWidth]="850" [nzTitle]="modalTitleDatosVerificado" [nzContent]="modalContentDatosVerificado" [nzFooter]="modalFooterDatosVerificado">
-    <ng-template #modalTitleDatosVerificado></ng-template>
+    <ng-template #modalTitleDatosVerificado>Datos de verificación de {{ this.userDataSelected.name }}</ng-template>
 
     <ng-template #modalContentDatosVerificado>
-        <!-- <div class="row">
-            <img src="{{ verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
-            
-            <img src="{{ verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
-        </div>
-        <br > 
-        <div class="row">
-            <label for="">{{ userDataSelected.name }}</label>
-            
-            <label for="">{{ userDataSelected.phone }}</label>
-        </div> -->
+        <form [formGroup]="verificadoEditarForm">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Nombre</label>
+                        <p for="">{{ userDataSelected.name }}</p>
+                    </div>
+        
+                    <div class="col-md-4">        
+                        <label>Teléfono</label>
+                        <p for="">{{ userDataSelected.phone }}</p>
+                    </div>
+        
+                    <div class="col-md-4">
+                        <label>Email</label>
+                        <p for="">{{ userDataSelected.email }}</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <br>
+                        <label>INE (parte frontal)</label>
+                        <ng-container *ngIf='this.verificadoDataSelected.ine == ""; else withImage1'>
+                            <p>Sin imagen</p>
+                        </ng-container>
+                        <ng-template #withImage1>
+                            <div>
+                                <img src="{{ this.verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <br>
+                        <label>INE (parte trasera)</label>
+                        <ng-container *ngIf='this.verificadoDataSelected.ine2 == ""; else withImage2'>
+                            <p>Sin imagen</p>
+                        </ng-container>
+                        <ng-template #withImage2>
+                            <div>
+                                <button>
+                                    <img  src="{{ this.verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt=""> 
+                                </button>
+                            </div>
+                        </ng-template>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        <br>
+                        <label>Domicilio</label>
+                        <ng-container *ngIf='this.verificadoDataSelected.domicilio == ""; else withImage3'>
+                            <p>Sin imagen</p>
+                        </ng-container>
+                        <ng-template #withImage3>
+                            <div>
+                                <img src="{{ this.verificadoDataSelected.domicilio }}" style="width: 50px; height: 90px;" alt="">
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <br>
+                        <label>Fachada</label>
+                        <ng-container *ngIf='this.verificadoDataSelected.fachada == ""; else withImage4'>
+                            <p>Sin imagen</p>
+                        </ng-container>
+                        <ng-template #withImage4>
+                            <div>
+                                <img src="{{ this.verificadoDataSelected.fachada }}" style="width: 50px; height: 90px;" alt="">
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <br>
+                        <label>Selfie</label>
+                        <ng-container *ngIf='this.verificadoDataSelected.selfie == ""; else withImage5'>
+                            <p>Sin imagen</p>
+                        </ng-container>
+                        <ng-template #withImage5>
+                            <div>
+                                <!--<button (click)="zoomImg(data)">-->
+                                    <img src="{{ this.verificadoDataSelected.selfie }}" style="width: 240px; height: 140px;" alt="" onclick="window.open(src= '{{ this.verificadoDataSelected.selfie }}','width =550,height=400');">
+                                <!--</button>-->
+                            </div>
+                        </ng-template>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <br>
+                            <label>¿Verificar usuario?</label>
+                            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="No" class="form-control" formControlName="completado">
+                                <nz-option nzLabel="Si" nzValue="1"></nz-option>
+                            </nz-select>
+                        </div>
+                        <div class="col-md-2">
+                            <br>
+                            <label></label>
+                            <button nz-button nzType="primary" (click)="onSubmitEditarVerificado()" [nzLoading]="isConfirmLoadingEditarVerificado">Guardar cambios</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
     </ng-template>
 
     <ng-template #modalFooterDatosVerificado>
         <button nz-button nzType="default" (click)="handleCancelDatosVerificado()">Cerrar</button>
     </ng-template>
+
 </nz-modal>
+  
+
+<!--<nz-modal [(nzVisible)]="isVisibleZoomImg" [nzWidth]="950" [nzContent]="modalContentZoomImg" [nzFooter]="modalFooterDatosVerificado">
+    <ng-template #modalContentZoomImg>
+        <div>
+            <img src="" style="width: 900px; height: 520px;" alt=""> 
+        </div>
+    </ng-template>
+
+    <ng-template #modalFooterDatosVerificado>
+        <button nz-button nzType="default" (click)="handleCancelDatosVerificado()">Cerrar</button>
+    </ng-template>
+</nz-modal>-->

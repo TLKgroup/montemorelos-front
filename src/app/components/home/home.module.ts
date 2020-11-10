@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
@@ -29,6 +29,7 @@ import 'rxjs';
     BoxModule,
     MkBoxSmallModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [DatePipe, { provide: NZ_ICONS, useValue: icons }]
 })
 export class HomeModule { }

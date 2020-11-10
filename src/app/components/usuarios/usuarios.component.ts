@@ -14,20 +14,18 @@ export class UsuariosComponent implements OnInit {
   public usuarios: Users[] = [];
   public verificado: Verificado[] = [];
 
-  isLoading: boolean = true;
-
-  isVisibleDatosUsuario = false;
-
   public userDataSelected: Users;
   public verificadoDataSelected: Verificado;
+
+  isLoading: boolean = true;
+  isVisibleDatosUsuario = false;
 
   constructor(
     private usuariosService : UsersService,
     private varificadoService : VerificadoService,
   ) { 
 
-    this.usuariosService.getUsers() .subscribe(request => {
-
+    this.usuariosService.getUsers().subscribe(request => {
       this.usuarios = request;
       this.isLoading = false;      
     },
@@ -35,14 +33,12 @@ export class UsuariosComponent implements OnInit {
       console.log(error);
     });  
 
-    this.varificadoService.getVerificado() .subscribe(request => {
-
+    this.varificadoService.getVerificado().subscribe(request => {
       this.verificado = request;
     },
     error => {
       console.log(error);
     });  
-
   }
 
   ngOnInit() {
@@ -52,8 +48,6 @@ export class UsuariosComponent implements OnInit {
   showModalDatosUsuario(data: string): void {
     this.userDataSelected = JSON.parse(JSON.stringify(data));
     this.verificadoDataSelected = JSON.parse(JSON.stringify(data));
-
-    this.isVisibleDatosUsuario = true;
 
     let index = this.verificado.findIndex(value => {
 			return this.userDataSelected.uidUser == String(value.uidUser);
@@ -65,13 +59,22 @@ export class UsuariosComponent implements OnInit {
 		else {
 
     }
+
+    if (index >= 0) {
+      this.userDataSelected = this.usuarios[index];
+		}
+		else {
+
+    }
+
+    console.log(this.verificadoDataSelected);
+    console.log(this.userDataSelected);
+    
+    this.isVisibleDatosUsuario = true;
   }
 
   handleCancelDatosUsuario(): void {
     this.isVisibleDatosUsuario = false;
-
-    this.userDataSelected = null;
-    this.verificadoDataSelected = null;
   }
 
 }

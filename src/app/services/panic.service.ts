@@ -31,6 +31,7 @@ export class PanicService {
                     item.id,
                     item.data.uid,
                     item.data.nombre,
+                    item.data.status,
                     item.data.telefono,
                     item.data.createAt,
                     item.data.latitud,
