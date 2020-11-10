@@ -143,15 +143,15 @@ export class VerificacionComponent implements OnInit {
   }
 
 
-  zoomImg(data: string): void{
+  zoomImg(ine, ine2, domicilio, fachada, selfie): void{
 
-    this.verificadoDataSelected = JSON.parse(JSON.stringify(data));
+    //this.verificadoDataSelected = JSON.parse(JSON.stringify(data));
 
     //var selfieImg = this.verificadoDataSelected.selfie;
 
     //console.log(selfieImg);
-
-    
+    var a = [];
+    a.push(this.verificadoDataSelected.selfie);
 
     this.isVisibleZoomImg= true;
 

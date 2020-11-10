@@ -59,10 +59,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.updateSubscription = interval(7500).subscribe((val) => { 
+    // this.updateSubscription = interval(7500).subscribe((val) => { 
 
       this.panicService.getPanic().subscribe(request => {
-        
+
         this.panics = request.filter(obj => obj.status == "0");
         console.log(this.panic.length);
         console.log(this.panics.length);
@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
         console.log(error);
       });  
       
-    });
+    // });
   }
 
   showModal(): void {
