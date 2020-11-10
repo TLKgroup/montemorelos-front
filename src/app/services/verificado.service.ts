@@ -41,16 +41,16 @@ export class VerificadoService {
 
     updateVerificado(idV:string, com: string, uidUser: string) {
 
-    let data = {
-      uid: idV,
-      completado: com,
-      uidUser: uidUser
+      let data = {
+        uid: idV,
+        completado: com,
+        uidUser: uidUser
+      }
+        
+      return this.http.put<any>(`${environment.url_api}updateVerificado/`, data).pipe(
+        map(result => {
+          return result;
+        })
+      );
     }
-      
-    return this.http.put<any>(`${environment.url_api}updateVerificado/`, data).pipe(
-      map(result => {
-        return result;
-      })
-    );
-  }
 }

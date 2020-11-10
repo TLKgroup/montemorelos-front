@@ -151,6 +151,8 @@ export class VerificacionComponent implements OnInit {
 
     //console.log(selfieImg);
 
+    
+
     this.isVisibleZoomImg= true;
 
   }
