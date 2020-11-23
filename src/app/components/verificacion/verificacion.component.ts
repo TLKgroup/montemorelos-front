@@ -28,13 +28,16 @@ export class VerificacionComponent implements OnInit {
   verificadoEditarForm :FormGroup;
 
   isVisibleDatosVerificado: Boolean = false;
-  isVisibleZoomImg: Boolean = false;
+  
 
 
   submittedEditarVerificado =false;
 
   isConfirmLoadingEditarVerificado = false;
 
+
+  isVisibleZoomImg: Boolean = false;
+  zoom;
   
   
   constructor(
@@ -143,17 +146,46 @@ export class VerificacionComponent implements OnInit {
   }
 
 
-  zoomImg(ine, ine2, domicilio, fachada, selfie): void{
-
+  zoomImagen(imagen: string){
+    
+    //var imagen = "e";
     //this.verificadoDataSelected = JSON.parse(JSON.stringify(data));
+      
+    switch (imagen) {
 
-    //var selfieImg = this.verificadoDataSelected.selfie;
+      case "a":
+        this.zoom = this.verificadoDataSelected.ine;          
+        console.log(this.zoom);
+      break;
+        
+      case "b":
+        this.zoom = this.verificadoDataSelected.ine2;
+        console.log(this.zoom);
+      break;
 
-    //console.log(selfieImg);
-    var a = [];
-    a.push(this.verificadoDataSelected.selfie);
+      case "c":
+        this.zoom = this.verificadoDataSelected.domicilio;
+        console.log(this.zoom);
+      break;
 
-    this.isVisibleZoomImg= true;
+      case "d":
+        this.zoom = this.verificadoDataSelected.fachada;
+        console.log(this.zoom);
+      break;  
+          
+      case "e":
+        this.zoom = this.verificadoDataSelected.selfie;
+        console.log(this.zoom);
+      break;   
 
+    }
+
+      this.isVisibleZoomImg= true;
   }
+
+
+  handleCancelZoomImg(): void {
+    this.isVisibleZoomImg = false;
+  }
+  
 }

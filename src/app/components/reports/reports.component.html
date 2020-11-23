@@ -171,11 +171,13 @@
                 <div class="form-group">
                     <div class="col-md-12">
                         <div  class="user-block">        
-                            <img src="../../../assets/img/maps.png">
+                            <img src="../../../assets/img/maps.png"> 
                             <span class="username"><a >Ubicacion</a></span>
                             <span class="description">Colonia: {{this.reportDataSelected.colony}}</span>
-                            <br />
-                            <div #map style="width:90%; height:300px"></div>
+                            <br>
+                            <div (click)="mapaurl()">
+                                <div #map style="pointer-events:none; width:100%; height:300px"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -372,7 +374,10 @@
                         <span class="username"><a >Ubicacion</a></span>
                         <span class="description">Colonia: {{this.reportDataSelectedProcess.colony}}</span>
                         <br />
-                        <div #map style="width:90%; height:300px"></div>
+                        <!--<div #map style="width:90%; height:300px"></div>-->
+                        <div (click)="mapaurl() " style="width:100%; height:300px">
+                            <div #map style="pointer-events:none; width:90%; height:250px"></div>
+                        </div>
                     </div>
                 </div>
             </div>

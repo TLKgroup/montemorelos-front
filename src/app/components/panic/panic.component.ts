@@ -28,6 +28,11 @@ export class PanicComponent implements OnInit {
   isVisiblePanic = false;
   private updateSubscription: Subscription;
 
+
+  isVisibleZoomImg: Boolean = false;
+  zoom;
+
+
   constructor(
     private panicService : PanicService,
     private varificadoService : VerificadoService,
@@ -86,6 +91,10 @@ export class PanicComponent implements OnInit {
   showModalPanic(data: string): void {
     this.panicDataSelected = JSON.parse(JSON.stringify(data));
     this.verificadoDataSelected = JSON.parse(JSON.stringify(data));
+    
+
+    console.log(data);
+    console.log(this.panicDataSelected);
 
     setTimeout(() => {      
      this.initializeMap(Number(this.panicDataSelected.latitude), Number(this.panicDataSelected.longitude));
@@ -112,6 +121,46 @@ export class PanicComponent implements OnInit {
 
   handleCancelPanic(): void {
     this.isVisiblePanic = false;
+  }
+
+
+
+  zoomImagen(imagen: string){
+    switch (imagen) {
+
+      case "a":
+        this.zoom = this.verificadoDataSelected.ine;          
+        console.log(this.zoom);
+      break;
+        
+      case "b":
+        this.zoom = this.verificadoDataSelected.ine2;
+        console.log(this.zoom);
+      break;
+
+      case "c":
+        this.zoom = this.verificadoDataSelected.domicilio;
+        console.log(this.zoom);
+      break;
+
+      case "d":
+        this.zoom = this.verificadoDataSelected.fachada;
+        console.log(this.zoom);
+      break;  
+          
+      case "e":
+        this.zoom = this.verificadoDataSelected.selfie;
+        console.log(this.zoom);
+      break;   
+
+    }
+
+      this.isVisibleZoomImg= true;
+  }
+
+
+  handleCancelZoomImg(): void {
+    this.isVisibleZoomImg = false;
   }
 
 }

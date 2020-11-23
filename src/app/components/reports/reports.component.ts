@@ -70,18 +70,15 @@ export class ReportsComponent implements OnInit {
     });
 
 
-    this.updateSubscription = interval(15000).subscribe(
-      (val) => { 
-          this.reportService.getReports() .subscribe(request => {
-            var val = request.filter(obj => Number(obj.status) == 1) 
-            this.reports = val.sort((a,b) => 0 - (a > b ? -1 : 1))
-          },
-          error => {
-            console.log(error);
-          }
-        );  
-      }
-    );
+    this.updateSubscription = interval(100000).subscribe((val) => { 
+      this.reportService.getReports() .subscribe(request => {
+        var val = request.filter(obj => Number(obj.status) == 1) 
+        this.reports = val.sort((a,b) => 0 - (a > b ? -1 : 1))
+      },
+      error => {
+        console.log(error);
+      });  
+    });
 
     this.reportService.getReports() .subscribe(request => {
 
@@ -111,7 +108,11 @@ export class ReportsComponent implements OnInit {
       zoom: 16,
       fullscreenControl: false,
       mapTypeControl: false,
-      streetViewControl: false
+      streetViewControl: false,
+      zoomControl: false,
+      scrollwheel: false,
+      disableDoubleClickZoom: true,
+      mapTypeId: 'hybrid'
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapOptions);
 
@@ -192,11 +193,6 @@ export class ReportsComponent implements OnInit {
     this.isVisibleViewReportProcess = false;
   }
 
-
-
-  
-
-
   showModalReportFinish(data: any) {
     this.isVisibleReportFinish = true;
   }
@@ -217,6 +213,12 @@ export class ReportsComponent implements OnInit {
   handleCancelViewReportFinish() {
     this.isVisibleViewReportFinish = false;
   }
+
+  public mapaurl(){
+    var urlmapa='https://www.google.com/maps/search/?api=1&query=' + this.reportDataSelected.latitude +','+this.reportDataSelected.longitude;
+    window.open(urlmapa);
+  }
+
 
 
 

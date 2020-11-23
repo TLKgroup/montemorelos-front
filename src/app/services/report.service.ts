@@ -87,11 +87,8 @@ export class ReportService {
       modificationAt: stat.fecha,
     }
 
-    return this.http.put<any>(`${environment.url_api}setstatus`, data)
-    .pipe(
-      map(result => {
-        return result;
-      })
-    );
+    return this.http.put<any>(`${environment.url_api}setstatus`, data).pipe(map(result => {
+      return result;
+    }));
   }
 }

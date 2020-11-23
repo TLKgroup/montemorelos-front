@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ReportService } from 'src/app/services/report.service';
 import { HomeService } from 'src/app/services/home.service';
 import { Subscription, interval } from 'rxjs';
 import { PanicService } from 'src/app/services/panic.service';
 import Swal from 'sweetalert2';
-import { Panic } from 'src/app/models/panic';
+import { lastPanic } from 'src/app/models/lastPanic';
+import { ToastrService } from 'ngx-toastr';
+import { PanicFilter } from 'src/app/models/panicFilter';
 
 @Component({
   selector: 'app-home',
@@ -13,19 +15,20 @@ import { Panic } from 'src/app/models/panic';
 })
 export class HomeComponent implements OnInit {
 
-  title = 'Alerta';
+  @ViewChild('map', { static: false }) gmapElement: ElementRef;
+  map: google.maps.Map;
+
   totalReporte;
   totalUsuario;
+  totalPanic;
   
-  public panic: Panic[] = [];
-  public panics: Panic[] = [];
+  public panic: PanicFilter[] = [];
 
-  public panicDataSelected: Panic;
+  public alertas: PanicFilter[] = [];
 
-  public cantidadpanic;
-  public cantidadpanics;
+  public lastpanic: lastPanic[] = []; 
 
-  public visto : Boolean = false;
+  public panicDataSelected: lastPanic;
 
   isVisibleViewPanicAlert : Boolean = false;
 
@@ -34,7 +37,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private reportService : ReportService, 
     private homeService : HomeService, 
-    private panicService : PanicService
+    private toastr: ToastrService,
   ) { 
 
     this.reportService.getReports().subscribe(result => {  
@@ -49,9 +52,9 @@ export class HomeComponent implements OnInit {
       console.log(error);
     });
 
-    this.panicService.getPanic().subscribe(request => {
-      this.panic = request.filter(obj => obj.status == "0");
-      console.log(this.panic.length);
+    this.homeService.getPanicFilter().subscribe(request => {
+      this.panic = request;
+      console.log(this.panic);
     },
     error => {
       console.log(error);
@@ -59,45 +62,73 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.updateSubscription = interval(7500).subscribe((val) => { 
-
-      this.panicService.getPanic().subscribe(request => {
-
-        this.panics = request.filter(obj => obj.status == "0");
-        console.log(this.panic.length);
-        console.log(this.panics.length);
-
-        if(this.panics.length > this.panic.length){
-          this.reproducir();
-          this.showModalAlert() 
-        }
-
-        this.panic = request;
-      },
-      error => {
-        console.log(error);
-      });  
-      
-    // });
+    this.updateSubscription = interval(11000).subscribe((val) => { 
+      this.alerts()
+    });
   }
 
-  showModal(): void {
-    
-    // this.panicDataSelected = JSON.parse(JSON.stringify(data));
-    // console.log(this.panicDataSelected);
+  alerts() {
+    this.homeService.getTotalPanic().subscribe(request => {
+      this.totalPanic = request.PanicTotal;
+
+      console.log(this.panic.length);
+      console.log(this.totalPanic);
+
+      if(this.totalPanic > this.panic.length) {
+        this.homeService.getLastPanic().subscribe(request => {
+
+          this.lastpanic = [];
+          this.lastpanic = request;
+           this.reproducir();
+          this.alerta();
+        },
+        error => {
+          console.log(error);
+        });
+
+        this.homeService.getPanicFilter().subscribe(request => {
+          this.panic = request;
+        },
+        error => {
+          console.log(error);
+        })
+      }
+    },
+    error => {
+      console.log(error);
+    });
+  }
+
+  alerta() {
+    this.lastpanic.forEach(ele => {
+      this.panicDataSelected = ele;
+    });
 
     Swal.fire({
-      title: 'Alerta',
-      text: 'Hola ',
+      title: this.panicDataSelected.nombre,
+      text: "You won't be able to revert this!",
       icon: 'warning',
-      showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Enviar'
+      confirmButtonText: 'Aceptar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.showModalAlert();
+        this.onSubmitstatus(this.panicDataSelected.id_panic);
+        this.showModalAlert(this.panicDataSelected);
       }
+    });
+  }
+
+  onSubmitstatus(id: String) {
+    let datos = {
+      id: id,
+      status: '1'
+    }
+
+    this.homeService.updatestatus(datos).subscribe(result => {
+
+    }, error => {
+      this.toastr.error('Hubo un error al actualizar el estado');
     });
   }
 
@@ -106,7 +137,36 @@ export class HomeComponent implements OnInit {
     audio.play();
   }
 
-  showModalAlert() {
+  public mapaurl(): void{
+    var urlmapa='https://www.google.com/maps/search/?api=1&query=' + this.panicDataSelected.latitude +','+this.panicDataSelected.longitude;
+    window.open(urlmapa);
+  }
+  
+  initializeMap(latitude: number, longitud: number) {
+    const lngLat = new google.maps.LatLng(latitude, longitud);
+    const mapOptions: google.maps.MapOptions = {
+      center: lngLat,
+      zoom: 16,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      streetViewControl: false
+    };
+    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapOptions);
+
+    let marker = new google.maps.Marker({
+      position: new google.maps.LatLng(latitude, longitud),
+      map: this.map,
+      title: 'Ubicacion de la alerta'
+    });
+
+    marker.setMap(this.map);
+  }
+
+  showModalAlert(data): void {
+    setTimeout(() => {      
+      this.initializeMap(Number(data.latitude), Number(data.longitude));
+    }, 1000);  
+
     this.isVisibleViewPanicAlert = true;
   }
 

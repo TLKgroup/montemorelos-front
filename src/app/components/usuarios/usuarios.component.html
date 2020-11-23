@@ -36,7 +36,7 @@
 </div>
 
 
-<nz-modal [(nzVisible)]="isVisibleDatosUsuario" [nzWidth]="750" [nzTitle]="modalTitleDatosUsuario" [nzContent]="modalContentDatosUsuario" [nzFooter]="modalFooterDatosUsuario">
+<nz-modal [(nzVisible)]="isVisibleDatosUsuario" [nzWidth]="850" [nzTitle]="modalTitleDatosUsuario" [nzContent]="modalContentDatosUsuario" [nzFooter]="modalFooterDatosUsuario">
     <ng-template #modalTitleDatosUsuario></ng-template>
 
     <ng-template #modalContentDatosUsuario>
@@ -56,7 +56,6 @@
             </div>
 
             <div class="col-md-4">
-
                 <label>Edad</label>
                 <p for="">{{ userDataSelected.age }}</p>
             </div>
@@ -88,12 +87,12 @@
 
             <div class="col-md-4">
                 <label>INE (parte frontal)</label>
-                <ng-container *ngIf="this.verificadoDataSelected.ine==''; else withImage">
+                <ng-container *ngIf="!this.verificadoDataSelected.ine; else withImage">
                     <p>Sin imagen</p>
                 </ng-container>
                 <ng-template #withImage>
                     <div>
-                        <img src="{{ this.verificadoDataSelected.ine }}" style="width: 50px; height: 90px;" alt="">
+                        <img (click)="zoomImagen('a')" src="{{ this.verificadoDataSelected.ine }}" style="width: 240px; height: 140px;" alt="">
                     </div>
                 </ng-template>
             </div>
@@ -105,7 +104,7 @@
                 </ng-container>
                 <ng-template #withImage1>
                     <div>
-                        <img src="{{ this.verificadoDataSelected.ine2 }}" style="width: 50px; height: 90px;" alt="">
+                        <img (click)="zoomImagen('b')" src="{{ this.verificadoDataSelected.ine2 }}" style="width: 240px; height: 140px;" alt="">
                     </div>
                 </ng-template>
             </div>
@@ -117,7 +116,7 @@
                 </ng-container>
                 <ng-template #withImage2>
                     <div>
-                        <img src="{{ this.verificadoDataSelected.domicilio }}" style="width: 50px; height: 90px;" alt="">
+                        <img (click)="zoomImagen('c')" src="{{ this.verificadoDataSelected.domicilio }}" style="width: 240px; height: 140px;" alt="">
                     </div>
                 </ng-template>
             </div>
@@ -129,7 +128,7 @@
                 </ng-container>
                 <ng-template #withImage3>
                     <div>
-                        <img src="{{ this.verificadoDataSelected.fachada }}" style="width: 50px; height: 90px;" alt="">
+                        <img (click)="zoomImagen('d')" src="{{ this.verificadoDataSelected.fachada }}" style="width: 240px; height: 140px;" alt="">
                     </div>
                 </ng-template>
             </div>
@@ -141,7 +140,7 @@
                 </ng-container>
                 <ng-template #withImage4>
                     <div>
-                        <img src="{{ this.verificadoDataSelected.selfie }}" style="width: 50px; height: 90px;" alt="">
+                        <img (click)="zoomImagen('e')" src="{{ this.verificadoDataSelected.selfie }}" style="width: 240px; height: 140px;" alt="">
                     </div>
                 </ng-template>
             </div>
@@ -152,5 +151,17 @@
 
     <ng-template #modalFooterDatosUsuario>
         <button nz-button nzType="default" (click)="handleCancelDatosUsuario()">Cerrar</button>
+    </ng-template>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisibleZoomImg" [nzWidth]="950" [nzContent]="modalContentZoomImg" [nzFooter]="modalFooterZoomImg" (nzOnCancel)="handleCancelZoomImg()">
+    <ng-template #modalContentZoomImg>
+        <div>
+            <img src="{{ this.zoom }}" style="width: 900px; height: 520px;" alt=""> 
+        </div>
+    </ng-template>
+
+    <ng-template #modalFooterZoomImg>
+       
     </ng-template>
 </nz-modal>

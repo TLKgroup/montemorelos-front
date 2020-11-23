@@ -14,18 +14,12 @@ moment.locale('en');
 
 export class PanicService {
 
-    observable:Observable<Panic[]>;  
-
     constructor(
         private http: HttpClient
-    ) {
-        
-    }
+    ) { }
   
     getPanic(): Observable<Panic[]> {
-        return this.http.get<any>(`${environment.url_api}panic`)
-        .pipe(
-        map(result => {
+        return this.http.get<any>(`${environment.url_api}panic`).pipe(map(result => {
             return JSON.parse(JSON.stringify(result.Panic)).map(item => {                
                 return new Panic(
                     item.id,
@@ -38,22 +32,7 @@ export class PanicService {
                     item.data.longitud
                 );
             });
-        })
-        );
+        }));
     }
 
-    //   changeStatus(stat: Status) {
-    //     let data = {
-    //       id: stat.id_report,
-    //       status: stat.status,
-    //       modificationAt: stat.fecha,
-    //     }
-
-    //     return this.http.put<any>(`${environment.url_api}setstatus`, data)
-    //     .pipe(
-    //       map(result => {
-    //         return result;
-    //       })
-    //     );
-    //   }
 }
