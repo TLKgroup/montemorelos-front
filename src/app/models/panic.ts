@@ -7,6 +7,7 @@ export class Panic{
         public telefono: string,
         public createAt: string,
         public latitude: string,
-        public longitude: string,     
+        public longitude: string,
+        public bateria: string     
     ){}
 }

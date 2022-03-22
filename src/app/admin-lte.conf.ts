@@ -6,7 +6,7 @@ export const adminLteConf = {
         },
         {
             label: ' Inicio', route: '/',
-            iconClasses: 'fa fa-road', 
+            iconClasses: 'fa fa-home', 
             pullRights: [
                 { 
                     classes: 'label pull-right bg-green' 

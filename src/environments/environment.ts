@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  url_api: 'http://192.168.100.4:3000/'
+  url_api: 'http://localhost:3700/'
+  // url_api: 'https://backend.tlk.com.mx/'
+  url_api: 'https://demo-monte.herokuapp.com/'
 };
 
 /*

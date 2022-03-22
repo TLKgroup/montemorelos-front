@@ -7,6 +7,12 @@ import Swal from 'sweetalert2';
 import { lastPanic } from 'src/app/models/lastPanic';
 import { ToastrService } from 'ngx-toastr';
 import { PanicFilter } from 'src/app/models/panicFilter';
+import { DatePipe } from '@angular/common';
+import { VerificadoService } from 'src/app/services/verificado.service';
+import { Verificado } from 'src/app/models/verificado';
+import { Users } from 'src/app/models/users';
+import { UsersService } from 'src/app/services/users.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -18,15 +24,24 @@ export class HomeComponent implements OnInit {
   @ViewChild('map', { static: false }) gmapElement: ElementRef;
   map: google.maps.Map;
 
+  @ViewChild('mapUsuario', { static: false }) gmapElementUsuario: ElementRef;
+  mapUsuario: google.maps.Map;
+
   totalReporte;
   totalUsuario;
   totalPanic;
+  totalPanicV;
   
   public panic: PanicFilter[] = [];
 
+  public panicHistorial: PanicFilter[] = [];
+
   public alertas: PanicFilter[] = [];
 
-  public lastpanic: lastPanic[] = []; 
+  public lastpanic: lastPanic[] = [];
+
+  public verificado: Verificado[] = []; 
+  public usuario: Users[] = []; 
 
   public panicDataSelected: lastPanic;
 
@@ -34,10 +49,18 @@ export class HomeComponent implements OnInit {
 
   private updateSubscription: Subscription;
 
+  public verificadoDataSelected: Verificado;  
+  public usuarioDataSelected: Users;  
+
+  audio = new Audio('../../../assets/songs/alerta.wav');
+
   constructor(
+    private verificadoService : VerificadoService,
+    private usuariosService : UsersService,
     private reportService : ReportService, 
     private homeService : HomeService, 
     private toastr: ToastrService,
+    private datepipe: DatePipe
   ) { 
 
     this.reportService.getReports().subscribe(result => {  
@@ -46,15 +69,31 @@ export class HomeComponent implements OnInit {
       console.log(error);
     });
     
-    this.homeService.totalUsuarios().subscribe(result => {
-      this.totalUsuario = result.Total;
-    }, error => {
+    // this.homeService.totalUsuarios().subscribe(result => {
+    //   // this.totalUsuario = result.Total;
+    // }, error => {
+    //   console.log(error);
+    // });
+
+    this.usuariosService.getUsers().subscribe(request => {
+      console.log(request);
+      
+      this.totalUsuario = request.length;
+    },
+      error => {
+        console.log(error);
+      }
+    );
+
+    this.homeService.getTotalPanic().subscribe(request => {
+      this.totalPanicV = request.PanicTotal;
+    },
+    error => {
       console.log(error);
-    });
+    })
 
     this.homeService.getPanicFilter().subscribe(request => {
       this.panic = request;
-      console.log(this.panic);
     },
     error => {
       console.log(error);
@@ -62,8 +101,8 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.updateSubscription = interval(11000).subscribe((val) => { 
-      this.alerts()
+    this.updateSubscription = interval(8000).subscribe((val) => { 
+      this.alerts();
     });
   }
 
@@ -71,15 +110,11 @@ export class HomeComponent implements OnInit {
     this.homeService.getTotalPanic().subscribe(request => {
       this.totalPanic = request.PanicTotal;
 
-      console.log(this.panic.length);
-      console.log(this.totalPanic);
-
       if(this.totalPanic > this.panic.length) {
         this.homeService.getLastPanic().subscribe(request => {
-
           this.lastpanic = [];
           this.lastpanic = request;
-           this.reproducir();
+          this.reproducir();
           this.alerta();
         },
         error => {
@@ -104,17 +139,50 @@ export class HomeComponent implements OnInit {
       this.panicDataSelected = ele;
     });
 
+    this.usuariosService.getUsersW(this.panicDataSelected.uidUser).subscribe(request => {
+      request.forEach(ele => {
+        this.usuarioDataSelected = ele
+      });
+
+      console.log(this.usuarioDataSelected); 
+    },
+    error => {
+      console.log(error);
+    });
+
+    this.verificadoService.getVerificadoW(this.panicDataSelected.uidUser).subscribe(request => {
+      request.forEach(ele => {
+        this.verificadoDataSelected = ele
+      });
+
+      console.log(this.verificadoDataSelected);   
+    },
+    error => {
+      console.log(error);
+    });  
+
+    this.homeService.getPanicW(this.panicDataSelected.uidUser).subscribe(request => {
+      this.panicHistorial = request;
+
+      console.log(this.panicHistorial);   
+    },
+    error => {
+      console.log(error);
+    });  
+
     Swal.fire({
       title: this.panicDataSelected.nombre,
-      text: "You won't be able to revert this!",
+      text: "El usuario emitio una señal de alerta",
       icon: 'warning',
-      confirmButtonColor: '#3085d6',
+      iconColor: '#EC1E1E',
+      confirmButtonColor: '#e75d1c',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar'
     }).then((result) => {
       if (result.isConfirmed) {
         this.onSubmitstatus(this.panicDataSelected.id_panic);
-        this.showModalAlert(this.panicDataSelected);
+        this.showModalAlert(this.panicDataSelected, this.verificadoDataSelected, this.usuarioDataSelected);
+        this.audio.pause();
       }
     });
   }
@@ -125,20 +193,25 @@ export class HomeComponent implements OnInit {
       status: '1'
     }
 
-    this.homeService.updatestatus(datos).subscribe(result => {
+    // this.homeService.updatestatus(datos).subscribe(result => {
 
-    }, error => {
-      this.toastr.error('Hubo un error al actualizar el estado');
-    });
+    // }, error => {
+    //   this.toastr.error('Hubo un error al actualizar el estado');
+    // });
   }
 
   reproducir() {
-    const audio = new Audio('../../../assets/songs/alerta.wav');
-    audio.play();
+    this.audio.play();
+    this.audio.loop = true;
   }
 
   public mapaurl(): void{
     var urlmapa='https://www.google.com/maps/search/?api=1&query=' + this.panicDataSelected.latitude +','+this.panicDataSelected.longitude;
+    window.open(urlmapa);
+  }
+
+  public mapaurlUsuario(): void{
+    var urlmapa='https://www.google.com/maps/search/?api=1&query=' + 25.189112 + ',' + -99.826746;
     window.open(urlmapa);
   }
   
@@ -156,16 +229,38 @@ export class HomeComponent implements OnInit {
     let marker = new google.maps.Marker({
       position: new google.maps.LatLng(latitude, longitud),
       map: this.map,
-      title: 'Ubicacion de la alerta'
+      title: 'Ubicacion de la alerta',
+      icon: '../../../assets/img/punto2.gif'
     });
 
     marker.setMap(this.map);
   }
 
-  showModalAlert(data): void {
+  mapOfUser() {
+    const lngLat = new google.maps.LatLng(25.189112, -99.826746);
+    const mapOptions: google.maps.MapOptions = {
+      center: lngLat,
+      zoom: 16,
+      fullscreenControl: false,
+      mapTypeControl: false,
+      streetViewControl: false
+    };
+    this.mapUsuario = new google.maps.Map(this.gmapElementUsuario.nativeElement, mapOptions);
+
+    let marker = new google.maps.Marker({
+      position: new google.maps.LatLng(25.189112, -99.826746),
+      map: this.mapUsuario,
+      title: 'Ubicacion del usuario'
+    });
+
+    marker.setMap(this.mapUsuario);
+  }
+
+  showModalAlert(data, veri, user): void {
     setTimeout(() => {      
       this.initializeMap(Number(data.latitude), Number(data.longitude));
-    }, 1000);  
+      this.mapOfUser();
+    }, 1000); 
 
     this.isVisibleViewPanicAlert = true;
   }
@@ -173,5 +268,4 @@ export class HomeComponent implements OnInit {
   handleCancelViewPanicAlert() {
     this.isVisibleViewPanicAlert = false;
   }
-
 }

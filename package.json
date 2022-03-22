@@ -38,6 +38,7 @@
     "howler": "^2.2.1",
     "ionicons": "^4.5.8",
     "moment": "^2.24.0",
+    "ng-zoom": "^1.1.5",
     "ng-zorro-antd": "^7.3.3",
     "ng2-completer": "^3.0.2",
     "ng2-notifications": "^0.3.0",

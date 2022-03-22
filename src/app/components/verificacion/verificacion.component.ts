@@ -164,7 +164,7 @@ export class VerificacionComponent implements OnInit {
       break;
 
       case "c":
-        this.zoom = this.verificadoDataSelected.domicilio;
+        this.zoom = this.verificadoDataSelected.colonia;
         console.log(this.zoom);
       break;
 

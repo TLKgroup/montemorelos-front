@@ -38,7 +38,7 @@ export class PanicComponent implements OnInit {
     private varificadoService : VerificadoService,
   ) {
 
-    this.panicService.getPanic() .subscribe(request => {
+    this.panicService.getPanicFilter() .subscribe(request => {
       this.panic = request;
       this.isLoading = false;      
     },
@@ -139,7 +139,7 @@ export class PanicComponent implements OnInit {
       break;
 
       case "c":
-        this.zoom = this.verificadoDataSelected.domicilio;
+        this.zoom = this.verificadoDataSelected.colonia;
         console.log(this.zoom);
       break;
 

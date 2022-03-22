@@ -26,13 +26,36 @@ export class VerificadoService {
           return JSON.parse(JSON.stringify(result.Verificado)).map(item => {                
             return new Verificado(
               item.id,
+              item.data.callenumero,
+              item.data.colonia,
               item.data.completado,
-              item.data.domicilio,
               item.data.fachada,
               item.data.ine,
               item.data.ine2,
+              item.data.municipio,
               item.data.selfie,
-              item.data.uidUser,
+              item.data.uidUser
+            );
+          });
+        })
+      );
+    }
+
+    getVerificadoW(uidUser: String): Observable<Verificado[]> {
+      return this.http.get<any>(`${environment.url_api}verificadoW/${uidUser}`).pipe(
+        map(result => {
+          return JSON.parse(JSON.stringify(result.Verificado)).map(item => {                
+            return new Verificado(
+              item.id,
+              item.data.callenumero,
+              item.data.colonia,
+              item.data.completado,
+              item.data.fachada,
+              item.data.ine,
+              item.data.ine2,
+              item.data.municipio,
+              item.data.selfie,
+              item.data.uidUser
             );
           });
         })

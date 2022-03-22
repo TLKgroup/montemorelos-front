@@ -18,21 +18,22 @@ export class PanicService {
         private http: HttpClient
     ) { }
   
-    getPanic(): Observable<Panic[]> {
-        return this.http.get<any>(`${environment.url_api}panic`).pipe(map(result => {
-            return JSON.parse(JSON.stringify(result.Panic)).map(item => {                
-                return new Panic(
-                    item.id,
-                    item.data.uid,
-                    item.data.nombre,
-                    item.data.status,
-                    item.data.telefono,
-                    item.data.createAt,
-                    item.data.latitud,
-                    item.data.longitud
-                );
-            });
+    getPanicFilter(): Observable<Panic[]> {
+        return this.http.get<any>(`${environment.url_api}panicfilter`).pipe(map(result => {
+          return JSON.parse(JSON.stringify(result.PanicFilter)).map(item => {
+            return new Panic(
+              item.id,
+              item.data.uid,
+              item.data.nombre,
+              item.data.status,
+              item.data.telefono,
+              item.data.createAt,
+              item.data.latitud,
+              item.data.longitud,
+              item.data.bateria,
+            );
+          });
         }));
-    }
+      }
 
 }

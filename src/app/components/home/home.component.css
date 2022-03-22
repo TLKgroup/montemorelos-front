@@ -1,0 +1,21 @@
+input[type=checkbox] {
+  display: none;
+}
+
+.container img {
+  transition: transform 0.35s ease;
+  cursor: zoom-in;
+  width: 100%;
+  height: 50%;
+  border-radius: 50%;
+}
+
+input[type=checkbox]:checked ~ label > img {
+  transform: scale(4);
+  cursor: zoom-out;
+  text-align: center;
+  position: absolute;
+  margin-left: 360px;
+  margin-top: 325px;
+  z-index: 99;
+}

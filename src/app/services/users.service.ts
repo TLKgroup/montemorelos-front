@@ -23,8 +23,26 @@ export class UsersService {
     }
   
     getUsers(): Observable<Users[]> {
-        return this.http.get<any>(`${environment.url_api}users`)
-        .pipe(
+        return this.http.get<any>(`${environment.url_api}users`).pipe(
+        map(result => {
+            return JSON.parse(JSON.stringify(result.Users)).map(item => {                
+                return new Users(
+                    item.data.uidUser,
+                    item.data.age,
+                    item.data.colony,
+                    item.data.email,
+                    item.data.name,
+                    item.data.phone,
+                    item.data.sex,
+                    item.data.verificado,
+                );
+            });
+        })
+        );
+    }
+
+    getUsersW(uidUser: String): Observable<Users[]> {
+        return this.http.get<any>(`${environment.url_api}usersW/${uidUser}`).pipe(
         map(result => {
             return JSON.parse(JSON.stringify(result.Users)).map(item => {                
                 return new Users(

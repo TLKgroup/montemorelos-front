@@ -2,7 +2,7 @@
   <div class="login-box">
     <div class="login-logo">
 
-      <img src="/assets/images/logo.png" height="160px">
+      <img src="/assets/images/logo montemorelos.png" height="160px">
 
     </div>
 
@@ -15,8 +15,7 @@
 
         <div class="form-group has-feedback">
 
-          <input type="text" formControlName="username" class="form-control" placeholder="Usuario"
-            [ngClass]="{ 'is-invalid': submitted && f.username.errors }" required>
+          <input type="text" formControlName="username" class="form-control" placeholder="Usuario" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" required>
           <div *ngIf="submitted && f.username.errors" class="invalid-feedback d-block">
             <div *ngIf="f.username.errors.required" class="text-danger">El nombre de ususario es requerido</div>
           </div>

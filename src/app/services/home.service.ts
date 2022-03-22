@@ -39,9 +39,7 @@ export class HomeService {
   }
 
   totalUsuarios() {
-
-    return this.http.get<any>(`${environment.url_api}usuarios/count/totales`)
-      .pipe(
+    return this.http.get<any>(`${environment.url_api}usuarios/count/totales`).pipe(
         map(data => {
           return data;
         })
@@ -49,7 +47,7 @@ export class HomeService {
   }
 
   getLastPanic(): Observable<lastPanic[]> {
-    return this.http.get<any>(`${environment.url_api}lastPanic`).pipe(map(result => {
+    return this.http.get<any>(`${environment.url_api}getPanicFirebase`).pipe(map(result => {
       return JSON.parse(JSON.stringify(result.lastPanic)).map(item => {
         return new lastPanic(
           item.id,
@@ -59,7 +57,8 @@ export class HomeService {
           item.data.telefono,
           item.data.createAt,
           item.data.latitud,
-          item.data.longitud
+          item.data.longitud,
+          item.data.bateria,
         );
       });
     }));
@@ -76,13 +75,30 @@ export class HomeService {
           item.data.telefono,
           item.data.createAt,
           item.data.latitud,
-          item.data.longitud
+          item.data.longitud,
+          item.data.bateria,
         );
       });
     }));
   }
 
-
+  getPanicW(uidUser: string): Observable<PanicFilter[]> {
+    return this.http.get<any>(`${environment.url_api}getPanicW/${uidUser}`).pipe(map(result => {
+      return JSON.parse(JSON.stringify(result.PanicW)).map(item => {
+        return new PanicFilter(
+          item.id,
+          item.data.uid,
+          item.data.nombre,
+          item.data.status,
+          item.data.telefono,
+          item.data.createAt,
+          item.data.latitud,
+          item.data.longitud,
+          item.data.bateria,
+        );
+      });
+    }));
+  }
 
   getTotalPanic() {
     return this.http.get<any>(`${environment.url_api}totalPanic`).pipe(

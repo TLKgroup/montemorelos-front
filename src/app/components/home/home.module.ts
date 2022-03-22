@@ -1,5 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, DatePipe, registerLocaleData } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
@@ -9,6 +9,8 @@ import { NgZorroAntdModule, NZ_ICONS, NzSelectModule, NzModalModule } from 'ng-z
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 
+import es from '@angular/common/locales/es';
+registerLocaleData(es);
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -30,6 +32,6 @@ import 'rxjs';
     MkBoxSmallModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [DatePipe, { provide: NZ_ICONS, useValue: icons }]
+  providers: [DatePipe, { provide: NZ_ICONS, useValue: icons }, { provide: LOCALE_ID, useValue: "es" }]
 })
 export class HomeModule { }
